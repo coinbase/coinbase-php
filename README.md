@@ -68,7 +68,7 @@ echo $response->transaction->notes;
 
 You can also send money in [a number of currencies](https://github.com/coinbase/coinbase-ruby/blob/master/supported_currencies.json) using the fifth parameter.  The amount will be automatically converted to the correct BTC amount using the current exchange rate.
 
-```
+```php
 $response = $coinbase->sendMoney("user@example.com", "2", null, null, "CAD");
 echo $response->transaction->amount->amount;
 // '0.0169'
