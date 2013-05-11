@@ -12,14 +12,34 @@ class Coinbase
         $this->_rpc = new Coinbase_Rpc($this->_apiKey);
     }
 
+    public function get($method, $params)
+    {
+        return $this->_rpc->request("GET", $method, $params);
+    }
+
+    public function post($method, $params)
+    {
+        return $this->_rpc->request("POST", $method, $params);
+    }
+
+    public function delete($method, $params)
+    {
+        return $this->_rpc->request("DELETE", $method, $params);
+    }
+
+    public function put($method, $params)
+    {
+        return $this->_rpc->request("PUT", $method, $params);
+    }
+
     public function getBalance()
     {
-        return $this->_rpc->request("GET", "account/balance", array());
+        return $this->get("account/balance", array());
     }
 
     public function getReceiveAddress()
     {
-        return $this->_rpc->request("GET", "account/receive_address", array())->address;
+        return $this->get("account/receive_address", array())->address;
     }
 
     public function sendMoney($to, $amount, $notes=null, $userFee=null, $amountCurrency=null)
@@ -41,6 +61,6 @@ class Coinbase
             $params["transaction[user_fee]"] = $userFee;
         }
 
-        return $this->_rpc->request("POST", "transactions/send_money", $params);
+        return $this->post("transactions/send_money", $params);
     }
 }
