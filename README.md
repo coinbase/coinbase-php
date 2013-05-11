@@ -73,3 +73,28 @@ $response = $coinbase->sendMoney("user@example.com", "2", null, null, "CAD");
 echo $response->transaction->amount->amount;
 // '0.0169'
 ```
+
+### Request bitcoin
+
+This will send an email to the recipient, requesting payment, and give them an easy way to pay.
+
+```php
+$response = $coinbase->requestMoney('client@example.com', 50, "contractor hours in January (website redesign for 50 BTC)");
+echo $response->transaction->request ? 'true' : 'false';
+// 'true'
+echo $response->transaction->id;
+// '501a3554f8182b2754000003'
+
+$response = $coinbase->resendRequest('501a3554f8182b2754000003');
+echo $response->success ? 'true' : 'false';
+// 'true'
+
+$response = $coinbase->cancelRequest('501a3554f8182b2754000003');
+echo $response->success ? 'true' : 'false';
+// 'true'
+
+// From the other account:
+$response = $coinbase->completeRequest('501a3554f8182b2754000003');
+echo $response->success ? 'true' : 'false';
+// 'true'
+```

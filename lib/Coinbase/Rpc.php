@@ -32,9 +32,11 @@ class Coinbase_Rpc
             $curlOpts[CURLOPT_POST] = 1;
             $curlOpts[CURLOPT_POSTFIELDS] = $queryString;
         } else if ($method == 'delete') {
-            // Unimplemented
+            $curlOpts[CURLOPT_CUSTOMREQUEST] = "DELETE";
+            $url .= "?" . $queryString;
         } else if ($method == 'put') {
-            // Unimplemented
+            $curlOpts[CURLOPT_CUSTOMREQUEST] = "PUT";
+            $curlOpts[CURLOPT_POSTFIELDS] = $queryString;
         }
 
         // Headers

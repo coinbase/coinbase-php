@@ -176,5 +176,13 @@ class TestOfCoinbase extends UnitTestCase {
         $this->assertEqual($response->transaction->id, '501a3554f8182b2754000003');
         $this->assertEqual($response->transaction->hsh, null);
         $this->assertEqual($response->transaction->request, true);
+
+        $requestor->returns('doCurlRequest', array( "statusCode" => 200, "body" => '
+        {
+          "success": true
+        }'));
+        $this->assertEqual($coinbase->resendRequest('501a3554f8182b2754000003')->success, true);
+        $this->assertEqual($coinbase->cancelRequest('501a3554f8182b2754000003')->success, true);
+        $this->assertEqual($coinbase->completeRequest('501a3554f8182b2754000003')->success, true);
     }
 }

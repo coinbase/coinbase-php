@@ -95,4 +95,19 @@ class Coinbase
 
         return $this->post("transactions/request_money", $params);
     }
+
+    public function resendRequest($id)
+    {
+        return $this->put("transactions/" . $id . "/resend_request", array());
+    }
+
+    public function cancelRequest($id)
+    {
+        return $this->delete("transactions/" . $id . "/cancel_request", array());
+    }
+
+    public function completeRequest($id)
+    {
+        return $this->put("transactions/" . $id . "/complete_request", array());
+    }
 }
