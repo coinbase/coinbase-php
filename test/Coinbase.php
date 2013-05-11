@@ -2,43 +2,67 @@
 require_once(dirname(__FILE__) . '/simpletest/autorun.php');
 require_once(dirname(__FILE__) . '/../lib/Coinbase.php');
 
-Mock::generate("Coinbase_Rpc");
+Mock::generate("Coinbase_Requestor");
 
 class TestOfCoinbase extends UnitTestCase {
 
-    function testGetBalance() {
+    function testGetBalance()
+    {
 
-        $rpc = new MockCoinbase_Rpc();
-        $rpc->returns('request', json_decode('
+        $requestor = new MockCoinbase_Requestor();
+        $requestor->returns('doCurlRequest', array( "statusCode" => 200, "body" => '
         {
           "amount":8590.032,
           "currency":"BTC"
         }'));
 
-        $coinbase = new Coinbase("", $rpc);
+        $coinbase = new Coinbase("", $requestor);
         $balance = $coinbase->getBalance();
         $this->assertEqual($balance, '8590.032');
     }
 
-    function testGetReceiveAddress() {
+    function testGetReceiveAddress()
+    {
 
-        $rpc = new MockCoinbase_Rpc();
-        $rpc->returns('request', json_decode('
+        $requestor = new MockCoinbase_Requestor();
+        $requestor->returns('doCurlRequest', array( "statusCode" => 200, "body" => '
         {
           "success": true,
           "address": "muVu2JZo8PbewBHRp6bpqFvVD87qvqEHWA",
           "callback_url": null
         }'));
 
-        $coinbase = new Coinbase("", $rpc);
+        $coinbase = new Coinbase("", $requestor);
         $address = $coinbase->getReceiveAddress();
         $this->assertEqual($address, 'muVu2JZo8PbewBHRp6bpqFvVD87qvqEHWA');
     }
 
-    function testSendMoney() {
+    function testSingleError()
+    {
+        $requestor = new MockCoinbase_Requestor();
+        $requestor->returns('doCurlRequest', array( "statusCode" => 200, "body" => '
+        {
+          "success": false,
+          "errors": [
+            "error1"
+          ]
+        }'));
 
-        $rpc = new MockCoinbase_Rpc();
-        $rpc->returns('request', json_decode('
+        $coinbase = new Coinbase("", $requestor);
+
+        try {
+            $balance = $coinbase->getBalance();
+            $this->fail("Coinbase_ApiException was expected here");
+        } catch (Coinbase_ApiException $e) {
+            $this->assertEqual($e->getMessage(), 'error1');
+        }
+    }
+
+    function testSendMoney()
+    {
+
+        $requestor = new MockCoinbase_Requestor();
+        $requestor->returns('doCurlRequest', array( "statusCode" => 200, "body" => '
         {
           "success": true,
           "transaction": {
@@ -66,7 +90,7 @@ class TestOfCoinbase extends UnitTestCase {
           }
         }'));
 
-        $coinbase = new Coinbase("", $rpc);
+        $coinbase = new Coinbase("", $requestor);
         $response = $coinbase->sendMoney("user1@example.com", "1.234", "Sample transaction for you");
         $this->assertEqual($response->success, true);
         $this->assertEqual($response->transaction->id, '501a1791f8182b2071000087');
@@ -74,10 +98,11 @@ class TestOfCoinbase extends UnitTestCase {
         $this->assertEqual($response->transaction->request, false);
     }
 
-    function testRequestMoney() {
+    function testRequestMoney()
+    {
 
-        $rpc = new MockCoinbase_Rpc();
-        $rpc->returns('request', json_decode('
+        $requestor = new MockCoinbase_Requestor();
+        $requestor->returns('doCurlRequest', array( "statusCode" => 200, "body" => '
         {
           "success": true,
           "transaction": {
@@ -104,7 +129,7 @@ class TestOfCoinbase extends UnitTestCase {
           }
         }'));
 
-        $coinbase = new Coinbase("", $rpc);
+        $coinbase = new Coinbase("", $requestor);
         $response = $coinbase->requestMoney("user1@example.com", "1.234", "Sample transaction for you");
         $this->assertEqual($response->success, true);
         $this->assertEqual($response->transaction->id, '501a3554f8182b2754000003');

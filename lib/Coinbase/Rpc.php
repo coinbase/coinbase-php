@@ -2,10 +2,12 @@
 
 class Coinbase_Rpc
 {
+    private $_requestor;
     private $_apiKey;
 
-    public function __construct($apiKey=null)
+    public function __construct($requestor, $apiKey=null)
     {
+        $this->_requestor = $requestor;
         $this->_apiKey = $apiKey;
     }
 
@@ -46,28 +48,18 @@ class Coinbase_Rpc
 
         // Do request
         curl_setopt_array($curl, $curlOpts);
-        $response = curl_exec($curl);
-
-        // Check for errors
-        if($response === false) {
-            $error = curl_errno($curl);
-            $message = curl_error($curl);
-            curl_close($curl);
-            throw new Coinbase_ConnectionException("Network error " . $message . " (" . $error . ")");
-        }
-
-        // Check status code
-        $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        curl_close($curl);
-        if($statusCode != 200) {
-            throw new Coinbase_ApiException("Status code " . $statusCode, $statusCode, $response);
-        }
+        $response = $this->_requestor->doCurlRequest($curl);
 
         // Decode response
         try {
-            $json = json_decode($response);
+            $json = json_decode($response['body']);
         } catch (Exception $e) {
-            throw new Coinbase_ConnectionException("Invalid response body", $statusCode, $response);
+            throw new Coinbase_ConnectionException("Invalid response body", $response['statusCode'], $response['body']);
+        }
+        if(isset($json->error)) {
+            throw new Coinbase_ApiException($json->error, $response['statusCode'], $response['body']);
+        } else if(isset($json->errors)) {
+            throw new Coinbase_ApiException(implode($json->errors, ', '), $response['statusCode'], $response['body']);
         }
 
         return $json;

@@ -8,4 +8,5 @@ require(dirname(__FILE__) . '/Coinbase/Exception.php');
 require(dirname(__FILE__) . '/Coinbase/ApiException.php');
 require(dirname(__FILE__) . '/Coinbase/ConnectionException.php');
 require(dirname(__FILE__) . '/Coinbase/Coinbase.php');
+require(dirname(__FILE__) . '/Coinbase/Requestor.php');
 require(dirname(__FILE__) . '/Coinbase/Rpc.php');

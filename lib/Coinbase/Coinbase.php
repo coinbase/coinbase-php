@@ -6,14 +6,15 @@ class Coinbase
     private $_apiKey;
     private $_rpc;
 
-    public function __construct($apiKey, $rpcMock=null)
+    public function __construct($apiKey, $requestor=null)
     {
         $this->_apiKey = $apiKey;
-        $this->_rpc = new Coinbase_Rpc($this->_apiKey);
 
-        if($rpcMock !== null) {
-            $this->_rpc = $rpcMock;
+        if($requestor === null) {
+            $requestor = new Coinbase_Requestor();
         }
+
+        $this->_rpc = new Coinbase_Rpc($requestor, $this->_apiKey);
     }
 
     public function get($method, $params)
