@@ -76,4 +76,8 @@ class Coinbase
 
         return $this->post("transactions/send_money", $params);
     }
+
+    public function requestMoney($from, $amount, $notes=null, $amountCurrency=null)
+    {
+    }
 }

@@ -71,5 +71,44 @@ class TestOfCoinbase extends UnitTestCase {
         $this->assertEqual($response->success, true);
         $this->assertEqual($response->transaction->id, '501a1791f8182b2071000087');
         $this->assertEqual($response->transaction->hsh, '9d6a7d1112c3db9de5315b421a5153d71413f5f752aff75bf504b77df4e646a3');
+        $this->assertEqual($response->transaction->request, false);
+    }
+
+    function testRequestMoney() {
+
+        $rpc = new MockCoinbase_Rpc();
+        $rpc->returns('request', json_decode('
+        {
+          "success": true,
+          "transaction": {
+            "id": "501a3554f8182b2754000003",
+            "created_at": "2012-08-02T01:07:48-07:00",
+            "hsh": null,
+            "notes": "Sample request for you!",
+            "amount": {
+              "amount": "1.23400000",
+              "currency": "BTC"
+            },
+            "request": true,
+            "status": "pending",
+            "sender": {
+              "id": "5011f33df8182b142400000a",
+              "name": "User One",
+              "email": "user1@example.com"
+            },
+            "recipient": {
+              "id": "5011f33df8182b142400000e",
+              "name": "User Two",
+              "email": "user2@example.com"
+            }
+          }
+        }'));
+
+        $coinbase = new Coinbase("", $rpc);
+        $response = $coinbase->requestMoney("user1@example.com", "1.234", "Sample transaction for you");
+        $this->assertEqual($response->success, true);
+        $this->assertEqual($response->transaction->id, '501a3554f8182b2754000003');
+        $this->assertEqual($response->transaction->hsh, null);
+        $this->assertEqual($response->transaction->request, true);
     }
 }
