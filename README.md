@@ -20,7 +20,7 @@ Start by [enabling an API Key on your account](https://coinbase.com/account/inte
 
 Next, create an instance of the client and pass it your API Key as the first (and only) parameter.
 
-```
+```php
 $coinbase = new Coinbase($_ENV['COINBASE_API_KEY'])
 ```
 
@@ -28,7 +28,7 @@ Notice here that we did not hard code the API key into our codebase, but set it 
 
 Now you can call methods on `$coinbase` similar to the ones described in the [API reference](https://coinbase.com/api/doc).  For example:
 
-```
+```php
 $balance = $coinbase->getBalance()->amount;
 echo "Balance is " . $balance . " BTC";
 ```
@@ -39,7 +39,7 @@ Currency amounts are returned as Strings. To avoid precision errors, use the [PH
 
 ### Check your balance
 
-```
+```php
 echo $coinbase->getBalance()->amount . " BTC";
 // '200.123 BTC'
 ```
@@ -48,7 +48,7 @@ echo $coinbase->getBalance()->amount . " BTC";
 
 `public function sendMoney($to, $amount, $notes=null, $userFee=null, $amountCurrency=null)`
 
-```
+```php
 $response = $coinbase->sendMoney("user@example.com", "2");
 echo $response->success ? 'true' : 'false';
 // 'true'
@@ -60,7 +60,7 @@ echo $response->transaction->id;
 
 The first parameter can also be a bitcoin address and the third parameter can be a note or description of the transaction.  Descriptions are only visible on Coinbase (not on the general bitcoin network).
 
-```
+```php
 $response = $coinbase->sendMoney("mpJKwdmJKYjiyfNo26eRp4j6qGwuUUnw9x", "0.1", "thanks for the coffee!");
 echo $response->transaction->notes;
 // 'thanks for the coffee!'
