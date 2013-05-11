@@ -17,7 +17,7 @@ class TestOfCoinbase extends UnitTestCase {
 
         $coinbase = new Coinbase("", $rpc);
         $balance = $coinbase->getBalance();
-        $this->assertEqual($balance->amount, '8590.032');
+        $this->assertEqual($balance, '8590.032');
     }
 
     function testGetReceiveAddress() {

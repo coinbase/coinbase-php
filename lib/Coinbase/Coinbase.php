@@ -38,7 +38,7 @@ class Coinbase
 
     public function getBalance()
     {
-        return $this->get("account/balance", array());
+        return $this->get("account/balance", array())->amount;
     }
 
     public function getReceiveAddress()
