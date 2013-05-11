@@ -41,7 +41,7 @@ Currency amounts are returned as Strings. To avoid precision errors, use the [PH
 
 ```
 echo $coinbase->getBalance()->amount . " BTC";
-# '200.123 BTC'
+// '200.123 BTC'
 ```
 
 ### Send bitcoin
@@ -51,11 +51,11 @@ echo $coinbase->getBalance()->amount . " BTC";
 ```
 $response = $coinbase->sendMoney("user@example.com", "2");
 echo $response->success ? 'true' : 'false';
-# 'true'
+// 'true'
 echo $response->transaction->status;
-# 'pending'
+// 'pending'
 echo $response->transaction->id;
-# '518d8567ed3ddcd4fd000034'
+// '518d8567ed3ddcd4fd000034'
 ```
 
 The first parameter can also be a bitcoin address and the third parameter can be a note or description of the transaction.  Descriptions are only visible on Coinbase (not on the general bitcoin network).
@@ -63,7 +63,7 @@ The first parameter can also be a bitcoin address and the third parameter can be
 ```
 $response = $coinbase->sendMoney("mpJKwdmJKYjiyfNo26eRp4j6qGwuUUnw9x", "0.1", "thanks for the coffee!");
 echo $response->transaction->notes;
-# 'thanks for the coffee!'
+// 'thanks for the coffee!'
 ```
 
 You can also send money in [a number of currencies](https://github.com/coinbase/coinbase-ruby/blob/master/supported_currencies.json) using the fifth parameter.  The amount will be automatically converted to the correct BTC amount using the current exchange rate.
@@ -71,5 +71,5 @@ You can also send money in [a number of currencies](https://github.com/coinbase/
 ```
 $response = $coinbase->sendMoney("user@example.com", "2", null, null, "CAD");
 echo $response->transaction->amount->amount;
-# '0.0169'
+// '0.0169'
 ```
