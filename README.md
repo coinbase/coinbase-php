@@ -29,7 +29,7 @@ Notice here that we did not hard code the API key into our codebase, but set it 
 Now you can call methods on `$coinbase` similar to the ones described in the [API reference](https://coinbase.com/api/doc).  For example:
 
 ```php
-$balance = $coinbase->getBalance()->amount;
+$balance = $coinbase->getBalance();
 echo "Balance is " . $balance . " BTC";
 ```
   
@@ -40,7 +40,7 @@ Currency amounts are returned as Strings. To avoid precision errors, use the [PH
 ### Check your balance
 
 ```php
-echo $coinbase->getBalance()->amount . " BTC";
+echo $coinbase->getBalance() . " BTC";
 // '200.123 BTC'
 ```
 
