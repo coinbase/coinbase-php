@@ -79,5 +79,19 @@ class Coinbase
 
     public function requestMoney($from, $amount, $notes=null, $amountCurrency=null)
     {
+        $params = array( "transaction[from]" => $from );
+
+        if($amountCurrency !== null) {
+            $params["transaction[amount_string]"] = $amount;
+            $params["transaction[amount_currency_iso]"] = $amountCurrency;
+        } else {
+            $params["transaction[amount]"] = $amount;
+        }
+
+        if($notes !== null) {
+            $params["transaction[notes]"] = $notes;
+        }
+
+        return $this->post("transactions/request_money", $params);
     }
 }
