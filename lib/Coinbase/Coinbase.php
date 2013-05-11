@@ -42,6 +42,15 @@ class Coinbase
         return $this->get("account/receive_address", array())->address;
     }
 
+    public function generateReceiveAddress($callback=null)
+    {
+        $params = array();
+        if($callback !== null) {
+            $params['address[callback_url]'] = $callback;
+        }
+        return $this->post("account/generate_receive_address", $params)->address;
+    }
+
     public function sendMoney($to, $amount, $notes=null, $userFee=null, $amountCurrency=null)
     {
         $params = array( "transaction[to]" => $to );
