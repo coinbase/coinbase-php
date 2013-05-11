@@ -43,6 +43,25 @@ class TestOfCoinbase extends UnitTestCase {
         $requestor->returns('doCurlRequest', array( "statusCode" => 200, "body" => '
         {
           "success": false,
+          "error": "error1"
+        }'));
+
+        $coinbase = new Coinbase("", $requestor);
+
+        try {
+            $balance = $coinbase->getBalance();
+            $this->fail("Coinbase_ApiException was expected here");
+        } catch (Coinbase_ApiException $e) {
+            $this->assertEqual($e->getMessage(), 'error1');
+        }
+    }
+
+    function testSingleArrayError()
+    {
+        $requestor = new MockCoinbase_Requestor();
+        $requestor->returns('doCurlRequest', array( "statusCode" => 200, "body" => '
+        {
+          "success": false,
           "errors": [
             "error1"
           ]
@@ -55,6 +74,28 @@ class TestOfCoinbase extends UnitTestCase {
             $this->fail("Coinbase_ApiException was expected here");
         } catch (Coinbase_ApiException $e) {
             $this->assertEqual($e->getMessage(), 'error1');
+        }
+    }
+
+    function testMultipleArrayError()
+    {
+        $requestor = new MockCoinbase_Requestor();
+        $requestor->returns('doCurlRequest', array( "statusCode" => 200, "body" => '
+        {
+          "success": false,
+          "errors": [
+            "error1",
+            "error2"
+          ]
+        }'));
+
+        $coinbase = new Coinbase("", $requestor);
+
+        try {
+            $balance = $coinbase->getBalance();
+            $this->fail("Coinbase_ApiException was expected here");
+        } catch (Coinbase_ApiException $e) {
+            $this->assertEqual($e->getMessage(), 'error1, error2');
         }
     }
 
