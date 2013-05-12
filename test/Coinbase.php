@@ -209,7 +209,7 @@ class TestOfCoinbase extends UnitTestCase {
         }'));
 
         $coinbase = new Coinbase("", $requestor);
-        $response = $coinbase->createButton("test", "1.23", "USD", array(
+        $response = $coinbase->createButton("test", "1.23", "USD", "Order123", array(
             "style" => "custom_large",
             "description" => "Sample description"
         ));

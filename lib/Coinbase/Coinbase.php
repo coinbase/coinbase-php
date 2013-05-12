@@ -110,4 +110,30 @@ class Coinbase
     {
         return $this->put("transactions/" . $id . "/complete_request", array());
     }
+
+    public function createButton($name, $price, $currency, $custom=null, $options=null)
+    {
+
+        $params = array(
+            "button[name]" => $name,
+            "button[price_string]" => $price,
+            "button[price_currency_iso]" => $currency
+        );
+        if($custom !== null) {
+            $params['button[custom]'] = $custom;
+        }
+        // TODO: Implement $options
+
+        $response = $this->post("buttons", $params);
+
+        if(!$response->success) {
+            return $response;
+        }
+
+        $returnValue = new stdClass();
+        $returnValue->button = $response->button;
+        $returnValue->embedHtml = "<div class=\"coinbase-button\" data-code=\"" . $response->button->code . "\"></div><script src=\"https://coinbase.com/assets/button.js\" type=\"text/javascript\"></script>";
+        $returnValue->success = true;
+        return $returnValue;
+    }
 }
