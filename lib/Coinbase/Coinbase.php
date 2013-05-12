@@ -17,24 +17,24 @@ class Coinbase
         $this->_rpc = new Coinbase_Rpc($requestor, $this->_apiKey);
     }
 
-    public function get($method, $params)
+    public function get($path, $params=array())
     {
-        return $this->_rpc->request("GET", $method, $params);
+        return $this->_rpc->request("GET", $path, $params);
     }
 
-    public function post($method, $params)
+    public function post($path, $params=array())
     {
-        return $this->_rpc->request("POST", $method, $params);
+        return $this->_rpc->request("POST", $path, $params);
     }
 
-    public function delete($method, $params)
+    public function delete($path, $params=array())
     {
-        return $this->_rpc->request("DELETE", $method, $params);
+        return $this->_rpc->request("DELETE", $path, $params);
     }
 
-    public function put($method, $params)
+    public function put($path, $params=array())
     {
-        return $this->_rpc->request("PUT", $method, $params);
+        return $this->_rpc->request("PUT", $path, $params);
     }
 
     public function getBalance()

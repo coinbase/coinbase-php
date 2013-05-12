@@ -114,3 +114,31 @@ echo $response->button->code;
 echo $response->embedHtml;
 // '<div class=\"coinbase-button\" data-code=\"93865b9cae83706ae59220c013bc0afd\"></div><script src=\"https://coinbase.com/assets/button.js\" type=\"text/javascript\"></script>'
 ```
+
+## Adding new methods
+
+You can see a [list of method calls here](https://github.com/coinbase/coinbase-php/blob/master/lib/Coinbase/Coinbase.php) and how they are implemented.  They are a wrapper around the [Coinbase JSON API](https://coinbase.com/api/doc).
+
+If there are any methods listed in the [API Reference](https://coinbase.com/api/doc) that don't have an explicit function name in the library, you can also call `get`, `post`, `put`, or `delete` with a `$path` and optional `$params` array for a quick implementation.  The raw JSON object will be returned. For example:
+
+```php
+var_dump($coinbase->get('/account/balance'));
+// object(stdClass)#4 (2) {
+//   ["amount"]=>
+//   string(10) "0.56902981"
+//   ["currency"]=>
+//   string(3) "BTC"
+// }
+```
+
+Or feel free to add a new wrapper method and submit a pull request.
+
+## Security notes
+
+If someone gains access to your API Key they will have complete control of your Coinbase account.  This includes the abillity to send all of your bitcoins elsewhere.
+
+For this reason, API access is disabled on all Coinbase accounts by default.  If you decide to enable API key access you should take precautions to store your API key securely in your application.  How to do this is application specific, but it's something you should [research](http://programmers.stackexchange.com/questions/65601/is-it-smart-to-store-application-keys-ids-etc-directly-inside-an-application) if you have never done this before.
+
+## Testing
+
+If you'd like to contribute code or modify this library, you can run the test suite by executing `/path/to/coinbase-php/test/Coinbase.php` in a web browser or on the command line with `php`.
