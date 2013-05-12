@@ -98,3 +98,19 @@ $response = $coinbase->completeRequest('501a3554f8182b2754000003');
 echo $response->success ? 'true' : 'false';
 // 'true'
 ```
+
+### Create a payment button
+
+This will create the code for a payment button (and modal window) that you can use to accept bitcoin on your website.  You can read [more about payment buttons here and try a demo](https://coinbase.com/docs/merchant_tools/payment_buttons).
+
+The method signature is `public function createButton($name, $price, $currency, $custom=null, $options=array())`.  The `custom` param will get passed through in [callbacks](https://coinbase.com/docs/merchant_tools/callbacks) to your site.  The list of valid `options` [are described here](https://coinbase.com/api/doc/buttons/create.html).
+
+```php
+$response = $coinbase->createButton("Your Order #1234", "42.95", "EUR", "my custom tracking code for this order", array(
+            "description" => "1 widget at €42.95"
+        ));
+echo $response->button->code;
+// '93865b9cae83706ae59220c013bc0afd'
+echo $response->embedHtml;
+// '<div class=\"coinbase-button\" data-code=\"93865b9cae83706ae59220c013bc0afd\"></div><script src=\"https://coinbase.com/assets/button.js\" type=\"text/javascript\"></script>'
+```

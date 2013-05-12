@@ -111,7 +111,7 @@ class Coinbase
         return $this->put("transactions/" . $id . "/complete_request", array());
     }
 
-    public function createButton($name, $price, $currency, $custom=null, $options=null)
+    public function createButton($name, $price, $currency, $custom=null, $options=array())
     {
 
         $params = array(
