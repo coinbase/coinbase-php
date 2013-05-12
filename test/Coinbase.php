@@ -185,4 +185,35 @@ class TestOfCoinbase extends UnitTestCase {
         $this->assertEqual($coinbase->cancelRequest('501a3554f8182b2754000003')->success, true);
         $this->assertEqual($coinbase->completeRequest('501a3554f8182b2754000003')->success, true);
     }
+
+    function testCreateButton()
+    {
+
+        $requestor = new MockCoinbase_Requestor();
+        $requestor->returns('doCurlRequest', array( "statusCode" => 200, "body" => '
+        {
+            "success": true,
+            "button": {
+                "code": "93865b9cae83706ae59220c013bc0afd",
+                "type": "buy_now",
+                "style": "custom_large",
+                "text": "Pay With Bitcoin",
+                "name": "test",
+                "description": "Sample description",
+                "custom": "Order123",
+                "price": {
+                    "cents": 123,
+                    "currency_iso": "USD"
+                }
+            }
+        }'));
+
+        $coinbase = new Coinbase("", $requestor);
+        $response = $coinbase->createButton("test", "1.23", "USD", array(
+            "style" => "custom_large",
+            "description" => "Sample description"
+        ));
+        $this->assertEqual($response->button->code, '93865b9cae83706ae59220c013bc0afd');
+        $this->assertEqual($response->embedHtml, "<div class=\"coinbase-button\" data-code=\"93865b9cae83706ae59220c013bc0afd\"></div><script src=\"https://coinbase.com/assets/button.js\" type=\"text/javascript\"></script>");
+    }
 }
