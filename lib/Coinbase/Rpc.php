@@ -58,6 +58,9 @@ class Coinbase_Rpc
         } catch (Exception $e) {
             throw new Coinbase_ConnectionException("Invalid response body", $response['statusCode'], $response['body']);
         }
+        if($json === null) {
+            throw new Coinbase_ApiException("Invalid response body", $response['statusCode'], $response['body']);
+        }
         if(isset($json->error)) {
             throw new Coinbase_ApiException($json->error, $response['statusCode'], $response['body']);
         } else if(isset($json->errors)) {

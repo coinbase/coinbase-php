@@ -122,7 +122,9 @@ class Coinbase
         if($custom !== null) {
             $params['button[custom]'] = $custom;
         }
-        // TODO: Implement $options
+        foreach($options as $option => $value) {
+            $params["button[$option]"] = $value;
+        }
 
         $response = $this->post("buttons", $params);
 
