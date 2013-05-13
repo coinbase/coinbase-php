@@ -138,4 +138,12 @@ class Coinbase
         $returnValue->success = true;
         return $returnValue;
     }
+
+    public function createUser($email, $password)
+    {
+        return $this->post("users", array(
+            "user[email]" => $email,
+            "user[password]" => $password,
+        ));
+    }
 }

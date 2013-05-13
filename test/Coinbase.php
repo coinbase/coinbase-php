@@ -216,4 +216,26 @@ class TestOfCoinbase extends UnitTestCase {
         $this->assertEqual($response->button->code, '93865b9cae83706ae59220c013bc0afd');
         $this->assertEqual($response->embedHtml, "<div class=\"coinbase-button\" data-code=\"93865b9cae83706ae59220c013bc0afd\"></div><script src=\"https://coinbase.com/assets/button.js\" type=\"text/javascript\"></script>");
     }
+
+    function testCreateUser()
+    {
+
+        $requestor = new MockCoinbase_Requestor();
+        $requestor->returns('doCurlRequest', array( "statusCode" => 200, "body" => '
+        {
+          "success": true,
+          "user": {
+            "id": "501a3d22f8182b2754000011",
+            "name": "New User",
+            "email": "newuser@example.com",
+            "receive_address": "mpJKwdmJKYjiyfNo26eRp4j6qGwuUUnw9x"
+          }
+        }'));
+
+        $coinbase = new Coinbase("", $requestor);
+        $response = $coinbase->createUser("newuser@example.com", "test123!");
+        $this->assertEqual($response->success, true);
+        $this->assertEqual($response->user->email, "newuser@example.com");
+        $this->assertEqual($response->user->receive_address, "mpJKwdmJKYjiyfNo26eRp4j6qGwuUUnw9x");
+    }
 }

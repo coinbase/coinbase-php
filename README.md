@@ -115,6 +115,18 @@ echo $response->embedHtml;
 // '<div class=\"coinbase-button\" data-code=\"93865b9cae83706ae59220c013bc0afd\"></div><script src=\"https://coinbase.com/assets/button.js\" type=\"text/javascript\"></script>'
 ```
 
+### Create a new user
+
+```php
+$response = $coinbase->createUser("newuser@example.com", "some password");
+echo $response->user->email;
+// 'newuser@example.com'
+echo $response->user->receive_address;
+// 'mpJKwdmJKYjiyfNo26eRp4j6qGwuUUnw9x'
+```
+
+A receive address is returned also in case you need to send the new user a payment right away.
+
 ## Adding new methods
 
 You can see a [list of method calls here](https://github.com/coinbase/coinbase-php/blob/master/lib/Coinbase/Coinbase.php) and how they are implemented.  They are a wrapper around the [Coinbase JSON API](https://coinbase.com/api/doc).
