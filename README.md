@@ -66,7 +66,7 @@ echo $response->transaction->notes;
 // 'thanks for the coffee!'
 ```
 
-You can also send money in [a number of currencies](https://github.com/coinbase/coinbase-ruby/blob/master/supported_currencies.json) using the fifth parameter.  The amount will be automatically converted to the correct BTC amount using the current exchange rate.
+You can also send money in a number of currencies (see `getCurrencies()`) using the fifth parameter.  The amount will be automatically converted to the correct BTC amount using the current exchange rate.
 
 ```php
 $response = $coinbase->sendMoney("user@example.com", "2", null, null, "CAD");
@@ -147,6 +147,26 @@ echo $response->button->code;
 // '93865b9cae83706ae59220c013bc0afd'
 echo $response->embedHtml;
 // '<div class=\"coinbase-button\" data-code=\"93865b9cae83706ae59220c013bc0afd\"></div><script src=\"https://coinbase.com/assets/button.js\" type=\"text/javascript\"></script>'
+```
+
+### Exchange rates and currency utilties
+
+You can fetch a list of all supported currencies and ISO codes with the `getCurrencies()` method.
+
+```php
+$currencies = $coinbase->getCurrencies();
+echo $currencies[0]->name;
+// 'Afghan Afghani (AFN)'
+```
+
+`getExchangeRate()` will return a list of exchange rates. Pass two parameters to get a single exchange rate.
+
+```php
+$rates = $coinbase->getExchangeRate();
+echo $rates->btc_to_cad;
+// '117.13892'
+echo $coinbase->getExchangeRate('btc', 'cad');
+// '117.13892'
 ```
 
 ### Create a new user

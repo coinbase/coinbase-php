@@ -189,4 +189,28 @@ class Coinbase
         $returnValue->contacts = $contacts;
         return $returnValue;
     }
+
+    public function getCurrencies()
+    {
+        $response = $this->get("currencies", array());
+        $result = array();
+        foreach ($response as $currency) {
+            $currency_class = new stdClass();
+            $currency_class->name = $currency[0];
+            $currency_class->iso = $currency[1];
+            $result[] = $currency_class;
+        }
+        return $result;
+    }
+
+    public function getExchangeRate($from=null, $to=null)
+    {
+        $response = $this->get("currencies/exchange_rates", array());
+
+        if ($from !== null && $to !== null) {
+            return $response->{"{$from}_to_{$to}"};
+        } else {
+            return $response;
+        }
+    }
 }
