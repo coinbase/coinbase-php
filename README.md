@@ -99,6 +99,40 @@ echo $response->success ? 'true' : 'false';
 // 'true'
 ```
 
+### Buy or sell bitcoin
+
+Buying and selling bitcoin requires you to [link and verify a bank account](https://coinbase.com/payment_methods) through the web interface first.
+
+Then you can call `buy` or `sell` and pass a `$quantity` of bitcoin you want to buy.
+
+On a buy, we'll debit your bank account and the bitcoin will arrive in your Coinbase account four business days later (this is shown as the `payout_date` below).  This is how long it takes for the bank transfer to complete and verify, although we're working on shortening this window. In some cases, we may not be able to guarantee a price, and buy requests will fail. In that case, set the second parameter (`$agreeBtcAmountVaries`) to true in order to purchase bitcoin at the future market price when your money arrives.
+
+On a sell we'll credit your bank account in a similar way and it will arrive within two business days.
+
+```php
+$response = $coinbase->buy('1.0');
+echo $response->transfer->code;
+// '6H7GYLXZ'
+echo $response->transfer->btc->amount;
+// '1.00000000'
+echo $response->transfer->total->amount;
+// '$17.95'
+echo $response->transfer->payout_date;
+// '2013-02-01T18:00:00-08:00' (ISO 8601 format - can be parsed with the strtotime() function)
+```
+
+```php
+$response = $coinbase->sell('1.0');
+echo $response->transfer->code;
+// 'RD2OC8AL'
+echo $response->transfer->btc->amount;
+// '1.00000000'
+echo $response->transfer->total->amount;
+// '$17.95'
+echo $response->transfer->payout_date;
+// '2013-02-01T18:00:00-08:00' (ISO 8601 format - can be parsed with the strtotime() function)
+```
+
 ### Create a payment button
 
 This will create the code for a payment button (and modal window) that you can use to accept bitcoin on your website.  You can read [more about payment buttons here and try a demo](https://coinbase.com/docs/merchant_tools/payment_buttons).

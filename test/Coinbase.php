@@ -238,4 +238,92 @@ class TestOfCoinbase extends UnitTestCase {
         $this->assertEqual($response->user->email, "newuser@example.com");
         $this->assertEqual($response->user->receive_address, "mpJKwdmJKYjiyfNo26eRp4j6qGwuUUnw9x");
     }
+
+    function testBuy()
+    {
+
+        $requestor = new MockCoinbase_Requestor();
+        $requestor->returns('doCurlRequest', array( "statusCode" => 200, "body" => '
+        {
+          "success": true,
+          "transfer": {
+            "_type": "AchDebit",
+            "code": "6H7GYLXZ",
+            "created_at": "2013-01-28T16:08:58-08:00",
+            "fees": {
+              "coinbase": {
+                "cents": 14,
+                "currency_iso": "USD"
+              },
+              "bank": {
+                "cents": 15,
+                "currency_iso": "USD"
+              }
+            },
+            "status": "created",
+            "payout_date": "2013-02-01T18:00:00-08:00",
+            "btc": {
+              "amount": "1.00000000",
+              "currency": "BTC"
+            },
+            "subtotal": {
+              "amount": "13.55",
+              "currency": "USD"
+            },
+            "total": {
+              "amount": "13.84",
+              "currency": "USD"
+            }
+          }
+        }'));
+
+        $coinbase = new Coinbase("", $requestor);
+        $response = $coinbase->buy("1");
+        $this->assertEqual($response->success, true);
+        $this->assertEqual($response->transfer->code, "6H7GYLXZ");
+    }
+
+    function testSell()
+    {
+
+        $requestor = new MockCoinbase_Requestor();
+        $requestor->returns('doCurlRequest', array( "statusCode" => 200, "body" => '
+        {
+          "success": true,
+          "transfer": {
+            "_type": "AchCredit",
+            "code": "RD2OC8AL",
+            "created_at": "2013-01-28T16:32:35-08:00",
+            "fees": {
+              "coinbase": {
+                "cents": 14,
+                "currency_iso": "USD"
+              },
+              "bank": {
+                "cents": 15,
+                "currency_iso": "USD"
+              }
+            },
+            "status": "created",
+            "payout_date": "2013-02-01T18:00:00-08:00",
+            "btc": {
+              "amount": "1.00000000",
+              "currency": "BTC"
+            },
+            "subtotal": {
+              "amount": "13.50",
+              "currency": "USD"
+            },
+            "total": {
+              "amount": "13.21",
+              "currency": "USD"
+            }
+          }
+        }'));
+
+        $coinbase = new Coinbase("", $requestor);
+        $response = $coinbase->sell("1");
+        $this->assertEqual($response->success, true);
+        $this->assertEqual($response->transfer->code, "RD2OC8AL");
+    }
 }

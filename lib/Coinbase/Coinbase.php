@@ -146,4 +146,19 @@ class Coinbase
             "user[password]" => $password,
         ));
     }
+
+    public function buy($amount, $agreeBtcAmountVaries=false)
+    {
+        return $this->post("buys", array(
+            "qty" => $amount,
+            "agree_btc_amount_varies " => $agreeBtcAmountVaries,
+        ));
+    }
+
+    public function sell($amount)
+    {
+        return $this->post("sells", array(
+            "qty" => $amount,
+        ));
+    }
 }
