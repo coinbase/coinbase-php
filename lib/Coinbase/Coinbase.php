@@ -161,4 +161,32 @@ class Coinbase
             "qty" => $amount,
         ));
     }
+
+    public function getContacts($query=null, $page=0, $limit=null)
+    {
+        $params = array(
+            "page" => $page,
+        );
+        if ($query !== null) {
+            $params['query'] = $query;
+        }
+        if ($limit !== null) {
+            $params['limit'] = $limit;
+        }
+
+        $result = $this->get("contacts", $params);
+        $contacts = array();
+        foreach($result->contacts as $contact) {
+            if(trim($contact->contact->email) != false) { // Check string not empty
+                $contacts[] = $contact->contact->email;
+            }
+        }
+
+        $returnValue = new stdClass();
+        $returnValue->total_count = $result->total_count;
+        $returnValue->num_pages = $result->num_pages;
+        $returnValue->current_page = $result->current_page;
+        $returnValue->contacts = $contacts;
+        return $returnValue;
+    }
 }

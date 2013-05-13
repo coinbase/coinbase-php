@@ -161,6 +161,16 @@ echo $response->user->receive_address;
 
 A receive address is returned also in case you need to send the new user a payment right away.
 
+### Get autocomplete contacts
+
+This will return a list of contacts the user has previously sent to or received from. Useful for auto completion. By default, 30 contacts are returned at a time; use the `$page` and `$limit` parameters to adjust how pagination works.
+
+```php
+$response = $coinbase->getContacts("exa");
+echo implode(', ', $response->contacts);
+// 'user1@example.com, user2@example.com'
+```
+
 ## Adding new methods
 
 You can see a [list of method calls here](https://github.com/coinbase/coinbase-php/blob/master/lib/Coinbase/Coinbase.php) and how they are implemented.  They are a wrapper around the [Coinbase JSON API](https://coinbase.com/api/doc).

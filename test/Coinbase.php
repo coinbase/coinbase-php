@@ -326,4 +326,32 @@ class TestOfCoinbase extends UnitTestCase {
         $this->assertEqual($response->success, true);
         $this->assertEqual($response->transfer->code, "RD2OC8AL");
     }
+
+    function testGetContacts()
+    {
+
+        $requestor = new MockCoinbase_Requestor();
+        $requestor->returns('doCurlRequest', array( "statusCode" => 200, "body" => '
+        {
+          "contacts": [
+            {
+              "contact": {
+                "email": "user1@example.com"
+              }
+            },
+            {
+              "contact": {
+                "email": "user2@example.com"
+              }
+            }
+          ],
+          "total_count": 2,
+          "num_pages": 1,
+          "current_page": 1
+        }'));
+
+        $coinbase = new Coinbase("", $requestor);
+        $response = $coinbase->getContacts("user");
+        $this->assertEqual($response->contacts, array( "user1@example.com", "user2@example.com" ));
+    }
 }
