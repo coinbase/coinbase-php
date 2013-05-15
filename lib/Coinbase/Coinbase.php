@@ -47,6 +47,32 @@ class Coinbase
         return $this->get("account/receive_address", array())->address;
     }
 
+    public function getAllAddresses($query=null, $page=0, $limit=null)
+    {
+        $params = array(
+            "page" => $page,
+        );
+        if ($query !== null) {
+            $params['query'] = $query;
+        }
+        if ($limit !== null) {
+            $params['limit'] = $limit;
+        }
+
+        $result = $this->get("addresses", $params);
+        $addresses = array();
+        foreach($result->addresses as $address) {
+            $addresses[] = $address->address; // Remove one layer of nesting
+        }
+
+        $returnValue = new stdClass();
+        $returnValue->total_count = $result->total_count;
+        $returnValue->num_pages = $result->num_pages;
+        $returnValue->current_page = $result->current_page;
+        $returnValue->addresses = $addresses;
+        return $returnValue;
+    }
+
     public function generateReceiveAddress($callback=null)
     {
         $params = array();

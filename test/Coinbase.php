@@ -37,6 +37,42 @@ class TestOfCoinbase extends UnitTestCase {
         $this->assertEqual($address, 'muVu2JZo8PbewBHRp6bpqFvVD87qvqEHWA');
     }
 
+    function testGetAllAddresses()
+    {
+
+        $requestor = new MockCoinbase_Requestor();
+        $requestor->returns('doCurlRequest', array( "statusCode" => 200, "body" => '
+        {
+          "addresses": [
+            {
+              "address": {
+                "address": "moLxGrqWNcnGq4A8Caq8EGP4n9GUGWanj4",
+                "callback_url": null,
+                "label": "My Label",
+                "created_at": "2013-05-09T23:07:08-07:00"
+              }
+            },
+            {
+              "address": {
+                "address": "mwigfecvyG4MZjb6R5jMbmNcs7TkzhUaCj",
+                "callback_url": null,
+                "label": null,
+                "created_at": "2013-05-09T17:50:37-07:00"
+              }
+            }
+          ],
+          "total_count": 2,
+          "num_pages": 1,
+          "current_page": 1
+        }'));
+
+        $coinbase = new Coinbase("", $requestor);
+        $addresses = $coinbase->getAllAddresses()->addresses;
+        $this->assertEqual($addresses[0]->address, 'moLxGrqWNcnGq4A8Caq8EGP4n9GUGWanj4');
+        $this->assertEqual($addresses[0]->label, 'My Label');
+        $this->assertEqual($addresses[1]->address, 'mwigfecvyG4MZjb6R5jMbmNcs7TkzhUaCj');
+    }
+
     function testSingleError()
     {
         $requestor = new MockCoinbase_Requestor();
