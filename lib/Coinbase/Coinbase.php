@@ -37,6 +37,22 @@ class Coinbase
         return $this->_rpc->request("PUT", $path, $params);
     }
 
+    private function getPaginatedResource($resource, $listElement, $unwrapElement, $page=0, $params=array())
+    {
+        $result = $this->get($resource, array_merge(array( "page" => $page ), $params));
+        $elements = array();
+        foreach($result->{$listElement} as $element) {
+            $elements[] = $element->{$unwrapElement}; // Remove one layer of nesting
+        }
+
+        $returnValue = new stdClass();
+        $returnValue->total_count = $result->total_count;
+        $returnValue->num_pages = $result->num_pages;
+        $returnValue->current_page = $result->current_page;
+        $returnValue->{$listElement} = $elements;
+        return $returnValue;
+    }
+
     public function getBalance()
     {
         return $this->get("account/balance", array())->amount;
@@ -49,28 +65,14 @@ class Coinbase
 
     public function getAllAddresses($query=null, $page=0, $limit=null)
     {
-        $params = array(
-            "page" => $page,
-        );
+        $params = array();
         if ($query !== null) {
             $params['query'] = $query;
         }
         if ($limit !== null) {
             $params['limit'] = $limit;
         }
-
-        $result = $this->get("addresses", $params);
-        $addresses = array();
-        foreach($result->addresses as $address) {
-            $addresses[] = $address->address; // Remove one layer of nesting
-        }
-
-        $returnValue = new stdClass();
-        $returnValue->total_count = $result->total_count;
-        $returnValue->num_pages = $result->num_pages;
-        $returnValue->current_page = $result->current_page;
-        $returnValue->addresses = $addresses;
-        return $returnValue;
+        return $this->getPaginatedResource("addresses", "addresses", "address", $page, $params);
     }
 
     public function generateReceiveAddress($callback=null)
@@ -238,5 +240,20 @@ class Coinbase
         } else {
             return $response;
         }
+    }
+
+    public function getTransactions($page=0)
+    {
+        return $this->getPaginatedResource("transactions", "transactions", "transaction", $page);
+    }
+
+    public function getOrders($page=0)
+    {
+        return $this->getPaginatedResource("orders", "orders", "order", $page);
+    }
+
+    public function getTransfers($page=0)
+    {
+        return $this->getPaginatedResource("transfers", "transfers", "transfer", $page);
     }
 }
