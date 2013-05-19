@@ -256,4 +256,14 @@ class Coinbase
     {
         return $this->getPaginatedResource("transfers", "transfers", "transfer", $page);
     }
+
+    public function getBuyPrice($qty=1)
+    {
+        return $this->get("prices/buy", array( "qty" => $qty ))->amount;
+    }
+
+    public function getSellPrice($qty=1)
+    {
+        return $this->get("prices/sell", array( "qty" => $qty ))->amount;
+    }
 }

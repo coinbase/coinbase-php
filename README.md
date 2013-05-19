@@ -99,6 +99,33 @@ echo $response->success ? 'true' : 'false';
 // 'true'
 ```
 
+### List your current transactions
+
+Sorted in descending order by timestamp, 30 per page.  You can pass an integer as the first param to page through results, for example `$coinbase->getTransactions(2)`.
+
+```php
+$response = $coinbase->getTransactions();
+echo $response->current_page;
+// '1'
+echo $response->num_pages;
+// '2'
+echo $response->transactions[0]->id;
+// '5018f833f8182b129c00002f'
+```
+
+Transactions will always have an `id` attribute which is the primary way to identity them through the Coinbase api.  They will also have a `hsh` (bitcoin hash) attribute once they've been broadcast to the network (usually within a few seconds).
+
+### Check bitcoin prices
+
+Check the buy or sell price by passing a `quantity` of bitcoin that you'd like to buy or sell.  This price includes Coinbase's fee of 1% and the bank transfer fee of $0.15.
+
+```php
+echo $coinbase->getBuyPrice('1');
+// '125.31'
+echo $coinbase->getSellPrice('1');
+// '122.41'
+```
+
 ### Buy or sell bitcoin
 
 Buying and selling bitcoin requires you to [link and verify a bank account](https://coinbase.com/payment_methods) through the web interface first.
