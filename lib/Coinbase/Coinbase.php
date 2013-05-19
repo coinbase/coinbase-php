@@ -266,4 +266,14 @@ class Coinbase
     {
         return $this->get("prices/sell", array( "qty" => $qty ))->amount;
     }
+
+    public function getTransaction($id)
+    {
+        return $this->get("transactions/" . $id, array())->transaction;
+    }
+
+    public function getOrder($id)
+    {
+        return $this->get("orders/" . $id, array())->order;
+    }
 }
