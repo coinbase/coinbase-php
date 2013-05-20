@@ -1,0 +1,14 @@
+{
+    "name": "coinbase/coinbase",
+    "description": "Coinbase API library",
+    "keywords": ["bitcoin", "coinbase"],
+    "homepage": "http://coinbase.com",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-0": {"Coinbase_": "lib/"}
+    },
+    "require": {
+        "php": ">=5.2.0"
+    }
+}
