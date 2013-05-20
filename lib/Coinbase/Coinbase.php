@@ -143,18 +143,24 @@ class Coinbase
     {
 
         $params = array(
-            "button[name]" => $name,
-            "button[price_string]" => $price,
-            "button[price_currency_iso]" => $currency
+            "name" => $name,
+            "price_string" => $price,
+            "price_currency_iso" => $currency
         );
         if($custom !== null) {
-            $params['button[custom]'] = $custom;
+            $params['custom'] = $custom;
         }
         foreach($options as $option => $value) {
-            $params["button[$option]"] = $value;
+            $params[$option] = $value;
         }
 
-        $response = $this->post("buttons", $params);
+        return $this->createButtonWithOptions($params);
+    }
+
+    public function createButtonWithOptions($options=array())
+    {
+
+        $response = $this->post("buttons", array( "button" => $options ));
 
         if(!$response->success) {
             return $response;

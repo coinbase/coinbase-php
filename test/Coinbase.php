@@ -253,6 +253,41 @@ class TestOfCoinbase extends UnitTestCase {
         $this->assertEqual($response->embedHtml, "<div class=\"coinbase-button\" data-code=\"93865b9cae83706ae59220c013bc0afd\"></div><script src=\"https://coinbase.com/assets/button.js\" type=\"text/javascript\"></script>");
     }
 
+    function testCreateButtonWithOptions()
+    {
+
+        $requestor = new MockCoinbase_Requestor();
+        $requestor->returns('doCurlRequest', array( "statusCode" => 200, "body" => '
+        {
+            "success": true,
+            "button": {
+                "code": "93865b9cae83706ae59220c013bc0afd",
+                "type": "buy_now",
+                "style": "custom_large",
+                "text": "Pay With Bitcoin",
+                "name": "test",
+                "description": "Sample description",
+                "custom": "Order123",
+                "price": {
+                    "cents": 123,
+                    "currency_iso": "USD"
+                }
+            }
+        }'));
+
+        $coinbase = new Coinbase("", $requestor);
+        $response = $coinbase->createButtonWithOptions("test", "1.23", "USD", "Order123", array(
+            "name" => "test",
+            "price_string" => "1.23",
+            "price_currency_iso" => "USD",
+            "custom" => "Order123",
+            "style" => "custom_large",
+            "description" => "Sample description"
+        ));
+        $this->assertEqual($response->button->code, '93865b9cae83706ae59220c013bc0afd');
+        $this->assertEqual($response->embedHtml, "<div class=\"coinbase-button\" data-code=\"93865b9cae83706ae59220c013bc0afd\"></div><script src=\"https://coinbase.com/assets/button.js\" type=\"text/javascript\"></script>");
+    }
+
     function testCreateUser()
     {
 
