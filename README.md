@@ -2,7 +2,7 @@
 
 An easy way to buy, send, and accept [bitcoin](http://en.wikipedia.org/wiki/Bitcoin) through the [Coinbase API](https://coinbase.com/docs/api/overview).
 
-This library only supports the [API key authentication method](https://coinbase.com/docs/api/overview). OAuth2 support is not yet implemented.
+This library supports both the [API key authentication method](https://coinbase.com/docs/api/overview) and OAuth. The below examples use an API key - for instructions on how to use OAuth, see [OAuth Authentication](#oauth-authentication).
 
 ## Installation
 
@@ -235,6 +235,31 @@ var_dump($coinbase->get('/account/balance'));
 ```
 
 Or feel free to add a new wrapper method and submit a pull request.
+
+## OAuth Authentication
+
+To authenticate with OAuth, first create an OAuth application at https://coinbase.com/oauth/applications.
+When a user wishes to connect their Coinbase account, redirect them to a URL created with `Coinbase_OAuth::createAuthorizeUrl`:
+
+```php
+$coinbaseOauth = new Coinbase_OAuth($_CLIENT_ID, $_CLIENT_SECRET, $_REDIRECT_URL);
+header("Location: " . $coinbaseOauth->createAuthorizeUrl("all"));
+```
+
+After the user has authorized your application, they will be redirected back to the redirect URL specified above. A `code` parameter will be included - pass this into `getTokens` to receive a set of tokens:
+
+```php
+$tokens = $coinbaseOauth->getTokens($_GET['code']);
+```
+
+Store these tokens safely, and use them to make Coinbase API requests in the future. For example:
+
+```php
+$coinbase = new Coinbase($coinbaseOauth, $tokens);
+$coinbase->getBalance();
+```
+
+A full example implementation is available in the `example` directory.
 
 ## Security notes
 

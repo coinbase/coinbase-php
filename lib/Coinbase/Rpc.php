@@ -4,18 +4,26 @@ class Coinbase_Rpc
 {
     private $_requestor;
     private $_apiKey;
+    private $_oauthObject;
+    private $_oauthTokens;
 
-    public function __construct($requestor, $apiKey=null)
+    public function __construct($requestor, $apiKey=null, $oauthObject=null, $oauthTokens=null)
     {
         $this->_requestor = $requestor;
         $this->_apiKey = $apiKey;
+        $this->_oauthObject = $oauthObject;
+        $this->_oauthTokens = $oauthTokens;
     }
 
     public function request($method, $url, $params)
     {
+
+        if($this->_apiKey !== null) {
+            // Always set the api_key parameter to the API key
+            $params['api_key'] = $this->_apiKey;
+        }
+
         // Create query string
-        // Always set the api_key parameter to the API key
-        $params['api_key'] = $this->_apiKey;
         $queryString = http_build_query($params);
         $url = Coinbase::API_BASE . $url;
 
@@ -41,6 +49,15 @@ class Coinbase_Rpc
 
         // Headers
         $headers = array('User-Agent: CoinbasePHP/v1');
+
+        if($this->_oauthObject !== null) {
+            // Use OAuth
+            if(time() > $this->_oauthTokens["expire_time"]) {
+                throw new Coinbase_TokensExpiredException("The OAuth tokens are expired. Use refreshTokens to refresh them");
+            }
+
+            $headers[] = 'Authorization: Bearer ' . $this->_oauthTokens["access_token"];
+        }
 
         // CURL options
         $curlOpts[CURLOPT_URL] = $url;

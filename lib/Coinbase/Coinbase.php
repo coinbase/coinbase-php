@@ -3,18 +3,30 @@
 class Coinbase
 {
     const API_BASE = 'https://coinbase.com/api/v1/';
-    private $_apiKey;
+    private $_useOauth = false;
+    private $_apiKey = null;
+    private $_oauthObject = null;
+    private $_tokens = null;
     private $_rpc;
 
-    public function __construct($apiKey, $requestor=null)
+    public function __construct($apiKeyOrOauth, $tokens=null)
     {
-        $this->_apiKey = $apiKey;
-
-        if($requestor === null) {
-            $requestor = new Coinbase_Requestor();
+        if($tokens !== null) {
+            $this->useOauth = true;
+            $this->_oauthObject = $apiKeyOrOauth;
+            $this->_tokens = $tokens;
+        } else {
+            $this->_apiKey = $apiKeyOrOauth;
         }
 
-        $this->_rpc = new Coinbase_Rpc($requestor, $this->_apiKey);
+        $this->_rpc = new Coinbase_Rpc(new Coinbase_Requestor(), $this->_apiKey, $this->_oauthObject, $this->_tokens);
+    }
+
+    // Used for unit testing only
+    public function setRequestor($requestor)
+    {
+        $this->_rpc = new Coinbase_Rpc($requestor, $this->_apiKey, $this->_oauthObject, $this->_tokens);
+        return $this;
     }
 
     public function get($path, $params=array())

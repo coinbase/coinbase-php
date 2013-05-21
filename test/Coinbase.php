@@ -16,7 +16,8 @@ class TestOfCoinbase extends UnitTestCase {
           "currency":"BTC"
         }'));
 
-        $coinbase = new Coinbase("", $requestor);
+        $coinbase = new Coinbase("");
+        $coinbase->setRequestor($requestor);
         $balance = $coinbase->getBalance();
         $this->assertEqual($balance, '8590.032');
     }
@@ -32,7 +33,8 @@ class TestOfCoinbase extends UnitTestCase {
           "callback_url": null
         }'));
 
-        $coinbase = new Coinbase("", $requestor);
+        $coinbase = new Coinbase("");
+        $coinbase->setRequestor($requestor);
         $address = $coinbase->getReceiveAddress();
         $this->assertEqual($address, 'muVu2JZo8PbewBHRp6bpqFvVD87qvqEHWA');
     }
@@ -66,7 +68,8 @@ class TestOfCoinbase extends UnitTestCase {
           "current_page": 1
         }'));
 
-        $coinbase = new Coinbase("", $requestor);
+        $coinbase = new Coinbase("");
+        $coinbase->setRequestor($requestor);
         $addresses = $coinbase->getAllAddresses()->addresses;
         $this->assertEqual($addresses[0]->address, 'moLxGrqWNcnGq4A8Caq8EGP4n9GUGWanj4');
         $this->assertEqual($addresses[0]->label, 'My Label');
@@ -82,7 +85,8 @@ class TestOfCoinbase extends UnitTestCase {
           "error": "error1"
         }'));
 
-        $coinbase = new Coinbase("", $requestor);
+        $coinbase = new Coinbase("");
+        $coinbase->setRequestor($requestor);
 
         try {
             $balance = $coinbase->getBalance();
@@ -103,7 +107,8 @@ class TestOfCoinbase extends UnitTestCase {
           ]
         }'));
 
-        $coinbase = new Coinbase("", $requestor);
+        $coinbase = new Coinbase("");
+        $coinbase->setRequestor($requestor);
 
         try {
             $balance = $coinbase->getBalance();
@@ -125,7 +130,8 @@ class TestOfCoinbase extends UnitTestCase {
           ]
         }'));
 
-        $coinbase = new Coinbase("", $requestor);
+        $coinbase = new Coinbase("");
+        $coinbase->setRequestor($requestor);
 
         try {
             $balance = $coinbase->getBalance();
@@ -167,7 +173,8 @@ class TestOfCoinbase extends UnitTestCase {
           }
         }'));
 
-        $coinbase = new Coinbase("", $requestor);
+        $coinbase = new Coinbase("");
+        $coinbase->setRequestor($requestor);
         $response = $coinbase->sendMoney("user1@example.com", "1.234", "Sample transaction for you");
         $this->assertEqual($response->success, true);
         $this->assertEqual($response->transaction->id, '501a1791f8182b2071000087');
@@ -206,7 +213,8 @@ class TestOfCoinbase extends UnitTestCase {
           }
         }'));
 
-        $coinbase = new Coinbase("", $requestor);
+        $coinbase = new Coinbase("");
+        $coinbase->setRequestor($requestor);
         $response = $coinbase->requestMoney("user1@example.com", "1.234", "Sample transaction for you");
         $this->assertEqual($response->success, true);
         $this->assertEqual($response->transaction->id, '501a3554f8182b2754000003');
@@ -244,7 +252,8 @@ class TestOfCoinbase extends UnitTestCase {
             }
         }'));
 
-        $coinbase = new Coinbase("", $requestor);
+        $coinbase = new Coinbase("");
+        $coinbase->setRequestor($requestor);
         $response = $coinbase->createButton("test", "1.23", "USD", "Order123", array(
             "style" => "custom_large",
             "description" => "Sample description"
@@ -275,7 +284,8 @@ class TestOfCoinbase extends UnitTestCase {
             }
         }'));
 
-        $coinbase = new Coinbase("", $requestor);
+        $coinbase = new Coinbase("");
+        $coinbase->setRequestor($requestor);
         $response = $coinbase->createButtonWithOptions("test", "1.23", "USD", "Order123", array(
             "name" => "test",
             "price_string" => "1.23",
@@ -303,7 +313,8 @@ class TestOfCoinbase extends UnitTestCase {
           }
         }'));
 
-        $coinbase = new Coinbase("", $requestor);
+        $coinbase = new Coinbase("");
+        $coinbase->setRequestor($requestor);
         $response = $coinbase->createUser("newuser@example.com", "test123!");
         $this->assertEqual($response->success, true);
         $this->assertEqual($response->user->email, "newuser@example.com");
@@ -348,7 +359,8 @@ class TestOfCoinbase extends UnitTestCase {
           }
         }'));
 
-        $coinbase = new Coinbase("", $requestor);
+        $coinbase = new Coinbase("");
+        $coinbase->setRequestor($requestor);
         $response = $coinbase->buy("1");
         $this->assertEqual($response->success, true);
         $this->assertEqual($response->transfer->code, "6H7GYLXZ");
@@ -392,7 +404,8 @@ class TestOfCoinbase extends UnitTestCase {
           }
         }'));
 
-        $coinbase = new Coinbase("", $requestor);
+        $coinbase = new Coinbase("");
+        $coinbase->setRequestor($requestor);
         $response = $coinbase->sell("1");
         $this->assertEqual($response->success, true);
         $this->assertEqual($response->transfer->code, "RD2OC8AL");
@@ -421,7 +434,8 @@ class TestOfCoinbase extends UnitTestCase {
           "current_page": 1
         }'));
 
-        $coinbase = new Coinbase("", $requestor);
+        $coinbase = new Coinbase("");
+        $coinbase->setRequestor($requestor);
         $response = $coinbase->getContacts("user");
         $this->assertEqual($response->contacts, array( "user1@example.com", "user2@example.com" ));
     }
@@ -489,7 +503,8 @@ class TestOfCoinbase extends UnitTestCase {
          ]
         }'));
 
-        $coinbase = new Coinbase("", $requestor);
+        $coinbase = new Coinbase("");
+        $coinbase->setRequestor($requestor);
         $response = $coinbase->getTransactions();
         $this->assertEqual($response->transactions[0]->id, '5018f833f8182b129c00002f');
         $this->assertEqual($response->transactions[1]->id, '5018f833f8182b129c00002e');
