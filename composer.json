@@ -6,7 +6,7 @@
     "type": "library",
     "license": "MIT",
     "autoload": {
-        "psr-0": {"Coinbase_": "lib/"}
+        "psr-0": {"Coinbase": "lib/"}
     },
     "require": {
         "php": ">=5.2.0"
