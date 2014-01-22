@@ -87,11 +87,14 @@ class Coinbase
         return $this->getPaginatedResource("addresses", "addresses", "address", $page, $params);
     }
 
-    public function generateReceiveAddress($callback=null)
+    public function generateReceiveAddress($callback=null, $label=null)
     {
         $params = array();
         if($callback !== null) {
             $params['address[callback_url]'] = $callback;
+        }
+        if($label !== null) {
+            $params['address[label]'] = $label;
         }
         return $this->post("account/generate_receive_address", $params)->address;
     }
