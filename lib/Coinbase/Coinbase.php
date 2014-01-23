@@ -188,6 +188,11 @@ class Coinbase
         return $returnValue;
     }
 
+    public function createOrderFromButtonCode($buttonCode)
+    {
+        return $this->post("buttons/" . $buttonCode . "/create_order");
+    }
+
     public function createUser($email, $password)
     {
         return $this->post("users", array(

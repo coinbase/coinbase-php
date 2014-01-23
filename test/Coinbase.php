@@ -262,6 +262,72 @@ class TestOfCoinbase extends UnitTestCase {
         $this->assertEqual($response->embedHtml, "<div class=\"coinbase-button\" data-code=\"93865b9cae83706ae59220c013bc0afd\"></div><script src=\"https://coinbase.com/assets/button.js\" type=\"text/javascript\"></script>");
     }
 
+    function testCreateOrderFromButtonCode()
+    {
+        $requestor = new MockCoinbase_Requestor();
+        $requestor->returns('doCurlRequest', array( "statusCode" => 200, "body" => '
+        {
+            "success": true,
+            "button": {
+                "code": "93865b9cae83706ae59220c013bc0afd",
+                "type": "buy_now",
+                "style": "custom_large",
+                "text": "Pay With Bitcoin",
+                "name": "test",
+                "description": "Sample description",
+                "custom": "Order123",
+                "price": {
+                    "cents": 123,
+                    "currency_iso": "USD"
+                }
+            }
+        }'));
+
+        $coinbase = new Coinbase("");
+        $coinbase->setRequestor($requestor);
+        $response = $coinbase->createButton("test", "1.23", "USD", "Order123", array(
+            "style" => "custom_large",
+            "description" => "Sample description"
+        ));
+
+        $this->assertEqual($response->button->code, '93865b9cae83706ae59220c013bc0afd');
+        $buttonCode = $response->button->code;
+
+        $requestor = new MockCoinbase_Requestor();
+        $requestor->returns('doCurlRequest', array( "statusCode" => 200, "body" => '
+        {
+          "success": true,
+          "order": {
+            "id": "7RTTRDVP",
+            "created_at": "2013-11-09T22:47:10-08:00",
+            "status": "new",
+            "total_btc": {
+              "cents": 100000000,
+              "currency_iso": "BTC"
+            },
+            "total_native": {
+              "cents": 100000000,
+              "currency_iso": "BTC"
+            },
+            "custom": "Order123",
+            "receive_address": "mgrmKftH5CeuFBU3THLWuTNKaZoCGJU5jQ",
+            "button": {
+              "type": "buy_now",
+              "name": "test",
+              "description": "Sample description",
+              "id": "93865b9cae83706ae59220c013bc0afd"
+            },
+            "transaction": null
+          }
+        }'));
+
+        $coinbase = new Coinbase("");
+        $coinbase->setRequestor($requestor);
+        $response = $coinbase->createOrderFromButtonCode($buttonCode);
+        $this->assertEqual($response->order->button->id, $buttonCode);
+        $this->assertEqual($response->order->status, 'new');
+    }
+
     function testCreateButtonWithOptions()
     {
 
