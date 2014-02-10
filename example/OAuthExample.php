@@ -18,7 +18,7 @@ if(isset($_GET['code'])) {
     // The user is now authenticated! Access and refresh tokens are in $tokens
     // Store these tokens safely, and use them to make Coinbase API requests in the future.
     // For example:
-    $coinbase = new Coinbase($coinbaseOauth, $tokens);
+    $coinbase = Coinbase::withOauth($coinbaseOauth, $tokens);
 
     try {
         echo 'Balance: ' . $coinbase->getBalance() . '<br>';

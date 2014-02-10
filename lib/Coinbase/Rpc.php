@@ -3,24 +3,21 @@
 class Coinbase_Rpc
 {
     private $_requestor;
-    private $_apiKey;
-    private $_oauthObject;
-    private $_oauthTokens;
+    private $_coinbase;
 
-    public function __construct($requestor, $apiKey=null, $oauthObject=null, $oauthTokens=null)
+    public function __construct($requestor, $coinbase)
     {
         $this->_requestor = $requestor;
-        $this->_apiKey = $apiKey;
-        $this->_oauthObject = $oauthObject;
-        $this->_oauthTokens = $oauthTokens;
+        $this->_coinbase = $coinbase;
     }
 
     public function request($method, $url, $params)
     {
 
-        if($this->_apiKey !== null) {
+        $auth = $this->_coinbase->getAuthenticationData();
+        if($auth->useSimpleApiKey) {
             // Always set the api_key parameter to the API key
-            $params['api_key'] = $this->_apiKey;
+            $params['api_key'] = $auth->apiKey;
         }
 
         // Create query string
@@ -35,7 +32,9 @@ class Coinbase_Rpc
         $method = strtolower($method);
         if ($method == 'get') {
             $curlOpts[CURLOPT_HTTPGET] = 1;
-            $url .= "?" . $queryString;
+            if ($queryString) {
+                $url .= "?" . $queryString;
+            }
         } else if ($method == 'post') {
             $curlOpts[CURLOPT_POST] = 1;
             $curlOpts[CURLOPT_POSTFIELDS] = $queryString;
@@ -50,13 +49,26 @@ class Coinbase_Rpc
         // Headers
         $headers = array('User-Agent: CoinbasePHP/v1');
 
-        if($this->_oauthObject !== null) {
+        if ($auth->useOauth) {
             // Use OAuth
-            if(time() > $this->_oauthTokens["expire_time"]) {
+            if(time() > $auth->tokens["expire_time"]) {
                 throw new Coinbase_TokensExpiredException("The OAuth tokens are expired. Use refreshTokens to refresh them");
             }
 
-            $headers[] = 'Authorization: Bearer ' . $this->_oauthTokens["access_token"];
+            $headers[] = 'Authorization: Bearer ' . $auth->tokens["access_token"];
+        } else if (!$auth->useSimpleApiKey) {
+            // Use HMAC API key
+            $microseconds = sprintf('%0.0f',round(microtime(true) * 1000000));
+
+            $dataToHash =  $microseconds . $url;
+            if (array_key_exists(CURLOPT_POSTFIELDS, $curlOpts)) {
+                $dataToHash .= $curlOpts[CURLOPT_POSTFIELDS];
+            }
+            $signature = hash_hmac("sha256", $dataToHash, $auth->apiKey[1]);
+
+            $headers[] = "ACCESS_KEY: {$auth->apiKey[0]}";
+            $headers[] = "ACCESS_SIGNATURE: $signature";
+            $headers[] = "ACCESS_NONCE: $microseconds";
         }
 
         // CURL options

@@ -18,10 +18,10 @@ Then, add the following to your PHP script:
 
 Start by [enabling an API Key on your account](https://coinbase.com/account/integrations).
 
-Next, create an instance of the client and pass it your API Key as the first (and only) parameter.
+Next, create an instance of the client using the `Coinbase::withApiKey` method:
 
 ```php
-$coinbase = new Coinbase($_ENV['COINBASE_API_KEY'])
+$coinbase = Coinbase::withApiKey($_ENV['COINBASE_API_KEY'], $_ENV['COINBASE_API_SECRET'])
 ```
 
 Notice here that we did not hard code the API key into our codebase, but set it in an environment variable instead.  This is just one example, but keeping your credentials separate from your code base is a good [security practice](https://coinbase.com/docs/api/overview#security).
@@ -34,6 +34,8 @@ echo "Balance is " . $balance . " BTC";
 ```
   
 Currency amounts are returned as Strings. To avoid precision errors, use the [PHP arbitrary precision math functions ](http://www.php.net/manual/en/ref.bc.php) to work with money amounts.
+
+A working API key example is available in `example/ApiKeyExample.php`.
 
 ## Examples
 
@@ -255,11 +257,19 @@ $tokens = $coinbaseOauth->getTokens($_GET['code']);
 Store these tokens safely, and use them to make Coinbase API requests in the future. For example:
 
 ```php
-$coinbase = new Coinbase($coinbaseOauth, $tokens);
+$coinbase = Coinbase::withOauth($coinbaseOauth, $tokens);
 $coinbase->getBalance();
 ```
 
 A full example implementation is available in the `example` directory.
+
+## Simple API Key Authentication
+
+If you're still using the deprecated Simple API keys, create a Coinbase object like so:
+
+```php
+$coinbase = Coinbase::withSimpleApiKey($simple_api);
+```
 
 ## Security notes
 

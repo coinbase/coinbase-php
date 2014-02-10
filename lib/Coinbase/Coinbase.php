@@ -3,29 +3,76 @@
 class Coinbase
 {
     const API_BASE = 'https://coinbase.com/api/v1/';
+
+    // Authentication
     private $_useOauth = false;
+    private $_useSimpleApiKey = false;
     private $_apiKey = null;
     private $_oauthObject = null;
     private $_tokens = null;
+
     private $_rpc;
 
+    public static function withApiKey($key, $secret)
+    {
+        $coinbase = new Coinbase(null);
+        $coinbase->_useOauth = false;
+        $coinbase->_useSimpleApiKey = false;
+        $coinbase->_apiKey = array($key, $secret);
+        return $coinbase;
+    }
+
+    public static function withSimpleApiKey($key)
+    {
+        $coinbase = new Coinbase(null);
+        $coinbase->_useOauth = false;
+        $coinbase->_useSimpleApiKey = true;
+        $coinbase->_apiKey = $key;
+        return $coinbase;
+    }
+
+    public static function withOAuth($oauth, $tokens)
+    {
+        $coinbase = new Coinbase(null);
+        $coinbase->_useOauth = true;
+        $coinbase->_useSimpleApiKey = false;
+        $coinbase->_oauthObject = $oauth;
+        $coinbase->_tokens = $tokens;
+        return $coinbase;
+    }
+
+    // This constructor is deprecated.
     public function __construct($apiKeyOrOauth, $tokens=null)
     {
-        if($tokens !== null) {
-            $this->useOauth = true;
+        if ($tokens !== null) {
+            // OAuth
+            $this->_useOauth = true;
             $this->_oauthObject = $apiKeyOrOauth;
             $this->_tokens = $tokens;
-        } else {
+        } else if ($apiKeyOrOauth !== null) {
+            // Simple API key
             $this->_apiKey = $apiKeyOrOauth;
+            $this->_useSimpleApiKey = true;
         }
 
-        $this->_rpc = new Coinbase_Rpc(new Coinbase_Requestor(), $this->_apiKey, $this->_oauthObject, $this->_tokens);
+        $this->_rpc = new Coinbase_Rpc(new Coinbase_Requestor(), $this);
+    }
+
+    public function getAuthenticationData()
+    {
+        $data = new stdClass();
+        $data->useSimpleApiKey = $this->_useSimpleApiKey;
+        $data->useOauth = $this->_useOauth;
+        $data->apiKey = $this->_apiKey;
+        $data->oauthObject = $this->_oauthObject;
+        $data->tokens = $this->_tokens;
+        return $data;
     }
 
     // Used for unit testing only
     public function setRequestor($requestor)
     {
-        $this->_rpc = new Coinbase_Rpc($requestor, $this->_apiKey, $this->_oauthObject, $this->_tokens);
+        $this->_rpc = new Coinbase_Rpc($requestor, $this);
         return $this;
     }
 
