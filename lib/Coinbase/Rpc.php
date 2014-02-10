@@ -40,7 +40,9 @@ class Coinbase_Rpc
             $curlOpts[CURLOPT_POSTFIELDS] = $queryString;
         } else if ($method == 'delete') {
             $curlOpts[CURLOPT_CUSTOMREQUEST] = "DELETE";
-            $url .= "?" . $queryString;
+            if ($queryString) {
+                $url .= "?" . $queryString;
+            }
         } else if ($method == 'put') {
             $curlOpts[CURLOPT_CUSTOMREQUEST] = "PUT";
             $curlOpts[CURLOPT_POSTFIELDS] = $queryString;
