@@ -3,23 +3,16 @@
 class Coinbase_Rpc
 {
     private $_requestor;
-    private $_coinbase;
+    private $authentication;
 
-    public function __construct($requestor, $coinbase)
+    public function __construct($requestor, $authentication)
     {
         $this->_requestor = $requestor;
-        $this->_coinbase = $coinbase;
+        $this->_authentication = $authentication;
     }
 
     public function request($method, $url, $params)
     {
-
-        $auth = $this->_coinbase->getAuthenticationData();
-        if($auth->useSimpleApiKey) {
-            // Always set the api_key parameter to the API key
-            $params['api_key'] = $auth->apiKey;
-        }
-
         // Create query string
         $queryString = http_build_query($params);
         $url = Coinbase::API_BASE . $url;
@@ -51,26 +44,44 @@ class Coinbase_Rpc
         // Headers
         $headers = array('User-Agent: CoinbasePHP/v1');
 
-        if ($auth->useOauth) {
-            // Use OAuth
-            if(time() > $auth->tokens["expire_time"]) {
-                throw new Coinbase_TokensExpiredException("The OAuth tokens are expired. Use refreshTokens to refresh them");
-            }
+        $auth = $this->_authentication->getData();
 
-            $headers[] = 'Authorization: Bearer ' . $auth->tokens["access_token"];
-        } else if (!$auth->useSimpleApiKey) {
-            // Use HMAC API key
-            $microseconds = sprintf('%0.0f',round(microtime(true) * 1000000));
+        // Get the authentication class and parse its payload into the HTTP header.
+        $authenticationClass = get_class($this->_authentication);
+        switch ($authenticationClass) {
+            case 'Coinbase_OAuthAuthentication':
+                // Use OAuth
+                if(time() > $auth->tokens["expire_time"]) {
+                    throw new Coinbase_TokensExpiredException("The OAuth tokens are expired. Use refreshTokens to refresh them");
+                }
 
-            $dataToHash =  $microseconds . $url;
-            if (array_key_exists(CURLOPT_POSTFIELDS, $curlOpts)) {
-                $dataToHash .= $curlOpts[CURLOPT_POSTFIELDS];
-            }
-            $signature = hash_hmac("sha256", $dataToHash, $auth->apiKey[1]);
+                $headers[] = 'Authorization: Bearer ' . $auth->tokens["access_token"];
+                break;
 
-            $headers[] = "ACCESS_KEY: {$auth->apiKey[0]}";
-            $headers[] = "ACCESS_SIGNATURE: $signature";
-            $headers[] = "ACCESS_NONCE: $microseconds";
+            case 'Coinbase_ApiKeyAuthentication':
+                // Use HMAC API key
+                $microseconds = sprintf('%0.0f',round(microtime(true) * 1000000));
+
+                $dataToHash =  $microseconds . $url;
+                if (array_key_exists(CURLOPT_POSTFIELDS, $curlOpts)) {
+                    $dataToHash .= $curlOpts[CURLOPT_POSTFIELDS];
+                }
+                $signature = hash_hmac("sha256", $dataToHash, $auth->apiKeySecret);
+
+                $headers[] = "ACCESS_KEY: {$auth->apiKey}";
+                $headers[] = "ACCESS_SIGNATURE: $signature";
+                $headers[] = "ACCESS_NONCE: $microseconds";
+                break;
+
+            case 'Coinbase_SimpleApiKeyAuthentication':
+                // Use Simple API key
+                // Warning! This authentication mechanism is deprecated
+                $headers[] = 'Authorization: api_key ' . $auth->apiKey;
+                break;
+
+            default:
+                throw new Coinbase_ApiException("Invalid authentication mechanism");
+                break;
         }
 
         // CURL options

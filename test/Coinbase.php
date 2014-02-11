@@ -575,4 +575,16 @@ class TestOfCoinbase extends UnitTestCase {
         $this->assertEqual($response->transactions[0]->id, '5018f833f8182b129c00002f');
         $this->assertEqual($response->transactions[1]->id, '5018f833f8182b129c00002e');
     }
+
+    function testInvalidAuthenticationObjectThrowsException()
+    {
+        try {
+            $invalidAuthenticationObject = new stdClass();
+            $invalidAuthenticationObject->foo = "bar";
+            $coinbase = new Coinbase($invalidAuthenticationObject);
+            $this->fail('Expected Coinbase_ApiException to be thrown, but it was not.');
+        } catch (Coinbase_ApiException $e) {
+            $this->assertEqual($e->getMessage(), 'Could not determine API authentication scheme');
+        }
+    }
 }

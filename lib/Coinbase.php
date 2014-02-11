@@ -12,3 +12,7 @@ require_once(dirname(__FILE__) . '/Coinbase/Requestor.php');
 require_once(dirname(__FILE__) . '/Coinbase/Rpc.php');
 require_once(dirname(__FILE__) . '/Coinbase/OAuth.php');
 require_once(dirname(__FILE__) . '/Coinbase/TokensExpiredException.php');
+require_once(dirname(__FILE__) . '/Coinbase/Authentication.php');
+require_once(dirname(__FILE__) . '/Coinbase/SimpleApiKeyAuthentication.php');
+require_once(dirname(__FILE__) . '/Coinbase/OAuthAuthentication.php');
+require_once(dirname(__FILE__) . '/Coinbase/ApiKeyAuthentication.php');
