@@ -3,76 +3,59 @@
 class Coinbase
 {
     const API_BASE = 'https://coinbase.com/api/v1/';
-
-    // Authentication
-    private $_useOauth = false;
-    private $_useSimpleApiKey = false;
-    private $_apiKey = null;
-    private $_oauthObject = null;
-    private $_tokens = null;
-
     private $_rpc;
+    private $_authentication;
+
 
     public static function withApiKey($key, $secret)
     {
-        $coinbase = new Coinbase(null);
-        $coinbase->_useOauth = false;
-        $coinbase->_useSimpleApiKey = false;
-        $coinbase->_apiKey = array($key, $secret);
-        return $coinbase;
+        return new Coinbase(new Coinbase_ApiKeyAuthentication($key, $secret));
     }
 
     public static function withSimpleApiKey($key)
     {
-        $coinbase = new Coinbase(null);
-        $coinbase->_useOauth = false;
-        $coinbase->_useSimpleApiKey = true;
-        $coinbase->_apiKey = $key;
-        return $coinbase;
+        return new Coinbase(new Coinbase_SimpleApiKeyAuthentication($key));
     }
 
     public static function withOAuth($oauth, $tokens)
     {
-        $coinbase = new Coinbase(null);
-        $coinbase->_useOauth = true;
-        $coinbase->_useSimpleApiKey = false;
-        $coinbase->_oauthObject = $oauth;
-        $coinbase->_tokens = $tokens;
-        return $coinbase;
+        return new Coinbase(new Coinbase_OAuthAuthentication($oauth, $tokens));
     }
 
     // This constructor is deprecated.
-    public function __construct($apiKeyOrOauth, $tokens=null)
+    public function __construct($authentication, $tokens=null, $apiKeySecret=null)
     {
-        if ($tokens !== null) {
-            // OAuth
-            $this->_useOauth = true;
-            $this->_oauthObject = $apiKeyOrOauth;
-            $this->_tokens = $tokens;
-        } else if ($apiKeyOrOauth !== null) {
-            // Simple API key
-            $this->_apiKey = $apiKeyOrOauth;
-            $this->_useSimpleApiKey = true;
+        // First off, check for a legit authentication class type
+        if (is_a($authentication, 'Coinbase_Authentication')) {
+            $this->_authentication = $authentication;
+        } else {
+            // Here, $authentication was not a valid authentication object, so
+            // analyze the constructor parameters and return the correct object.
+            // This should be considered deprecated, but it's here for backward compatibility.
+            // In older versions of this library, the first parameter of this constructor
+            // can be either an API key string or an OAuth object.
+            if ($tokens !== null) {
+                $this->_authentication = new Coinbase_OAuthAuthentication($authentication, $tokens);
+            } else if ($authentication !== null && is_string($authentication)) {
+                $apiKey = $authentication;
+                if ($apiKeySecret === null) {
+                    // Simple API key
+                    $this->_authentication = new Coinbase_SimpleApiKeyAuthentication($apiKey);
+                } else {
+                    $this->_authentication = new Coinbase_ApiKeyAuthentication($apiKey, $apiKeySecret);
+                }
+            } else {
+                throw new Coinbase_ApiException('Could not determine API authentication scheme');
+            }
         }
 
-        $this->_rpc = new Coinbase_Rpc(new Coinbase_Requestor(), $this);
-    }
-
-    public function getAuthenticationData()
-    {
-        $data = new stdClass();
-        $data->useSimpleApiKey = $this->_useSimpleApiKey;
-        $data->useOauth = $this->_useOauth;
-        $data->apiKey = $this->_apiKey;
-        $data->oauthObject = $this->_oauthObject;
-        $data->tokens = $this->_tokens;
-        return $data;
+        $this->_rpc = new Coinbase_Rpc(new Coinbase_Requestor(), $this->_authentication);
     }
 
     // Used for unit testing only
     public function setRequestor($requestor)
     {
-        $this->_rpc = new Coinbase_Rpc($requestor, $this);
+        $this->_rpc = new Coinbase_Rpc($requestor, $this->_authentication);
         return $this;
     }
 
