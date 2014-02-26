@@ -39,6 +39,11 @@ A working API key example is available in `example/ApiKeyExample.php`.
 
 ## Examples
 
+### Get current user email
+```php
+echo $coinbase->getEmail();
+```
+
 ### Check your balance
 
 ```php
