@@ -332,4 +332,39 @@ class Coinbase
     {
         return $this->get("orders/" . $id, array())->order;
     }
+    
+    public function getUserID()
+    {
+        return $this->get("users", array())->users[0]->user->id;
+    }
+    
+    public function getUserName()
+    {
+        return $this->get("users", array())->users[0]->user->name;
+    }
+    
+    public function getUserEmail()
+    {
+        return $this->get("users", array())->users[0]->user->email;
+    }
+    
+    public function getUserTimeZone()
+    {
+        return $this->get("users", array())->users[0]->user->time_zone;
+    }
+    
+    public function getUserNativeCurrency()
+    {
+        return $this->get("users", array())->users[0]->user->native_currency;
+    }
+    
+    public function getUserMerchantName()
+    {
+        return $this->get("users", array())->users[0]->user->merchant->company_name;
+    }
+    
+    public function getUserMerchantLogo()
+    {
+        return $this->get("users", array())->users[0]->user->merchant->logo;
+    }
 }
