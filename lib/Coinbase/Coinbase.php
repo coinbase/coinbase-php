@@ -100,6 +100,12 @@ class Coinbase
         return $this->get("account/balance", array())->amount;
     }
 
+    public function getEmail()
+    {
+	$user = $this->get("users", array())->users[0]->user;
+	return $user->email;
+    }
+
     public function getReceiveAddress()
     {
         return $this->get("account/receive_address", array())->address;
