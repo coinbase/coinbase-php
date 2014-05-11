@@ -184,7 +184,7 @@ class Coinbase
         return $this->put("transactions/" . $id . "/complete_request", array());
     }
 
-    public function createButton($name, $price, $currency, $custom=null, $options=array())
+    public function createButton($name, $price, $currency, $custom=null, $options=array(), $account_id=null)
     {
 
         $params = array(
@@ -199,13 +199,16 @@ class Coinbase
             $params[$option] = $value;
         }
 
-        return $this->createButtonWithOptions($params);
+        return $this->createButtonWithOptions($params, $account_id);
     }
 
-    public function createButtonWithOptions($options=array())
+    public function createButtonWithOptions($options=array(), $account_id=null)
     {
 
-        $response = $this->post("buttons", array( "button" => $options ));
+        if ( $account_id !== null )
+            $response = $this->post("buttons", array( "account_id" => $account_id, "button" => $options ));
+        else
+            $response = $this->post("buttons", array( "button" => $options ));
 
         if(!$response->success) {
             return $response;
