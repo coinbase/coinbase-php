@@ -6,6 +6,55 @@ Mock::generate("Coinbase_Requestor");
 
 class TestOfCoinbase extends UnitTestCase {
 
+    function testGetUser()
+    {
+
+        $requestor = new MockCoinbase_Requestor();
+        $requestor->returns('doCurlRequest', array( "statusCode" => 200, "body" => '
+        {
+          "users": [
+            {
+              "user": {
+                "id": "512db383f8182bd24d000001",
+                "name": "User One",
+                "email": "user1@example.com",
+                "time_zone": "Pacific Time (US & Canada)",
+                "native_currency": "USD",
+                "balance": {
+                  "amount": "49.76000000",
+                  "currency": "BTC"
+                },
+                "buy_level": 1,
+                "sell_level": 1,
+                "buy_limit": {
+                  "amount": "10.00000000",
+                  "currency": "BTC"
+                },
+                "sell_limit": {
+                  "amount": "100.00000000",
+                  "currency": "BTC"
+                },
+                "merchant": {
+                    "company_name": "User One & Sons",
+                    "logo": "logo_url"
+                }
+              }
+            }
+          ]
+        }'));
+
+        $coinbase = new Coinbase("");
+        $coinbase->setRequestor($requestor);
+        $user = $coinbase->getUser();
+        $this->assertEqual($user->id, '512db383f8182bd24d000001');
+        $this->assertEqual($user->name, 'User One');
+        $this->assertEqual($user->email, 'user1@example.com');
+        $this->assertEqual($user->time_zone, 'Pacific Time (US & Canada)');
+        $this->assertEqual($user->native_currency, 'USD');
+        $this->assertEqual($user->merchant->company_name, 'User One & Sons');
+        $this->assertEqual($user->merchant->logo, 'logo_url');
+    }
+
     function testGetBalance()
     {
 

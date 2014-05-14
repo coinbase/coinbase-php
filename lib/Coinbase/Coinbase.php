@@ -332,4 +332,10 @@ class Coinbase
     {
         return $this->get("orders/" . $id, array())->order;
     }
+
+    public function getUser()
+    {
+        return $this->get("users", array())->users[0]->user;
+    }
+
 }

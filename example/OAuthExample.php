@@ -21,7 +21,8 @@ if(isset($_GET['code'])) {
     $coinbase = Coinbase::withOauth($coinbaseOauth, $tokens);
 
     try {
-        echo 'Balance: ' . $coinbase->getBalance() . '<br>';
+        echo 'Your email: ' . $coinbase->getUser()->email . '<br>';
+        echo 'Your balance: ' . $coinbase->getBalance() . '<br>';
         echo $coinbase->createButton("Alpaca socks", "10.00", "CAD")->embedHtml;
     } catch (Coinbase_TokensExpiredException $e) {
         $newTokens = $coinbaseOauth->refreshTokens($tokens);
@@ -33,5 +34,5 @@ if(isset($_GET['code'])) {
     // The provided parameters specify the access your application will have to the
     // user's account; for a full list, see https://coinbase.com/docs/api/overview
     // You can pass as many scopes as you would like
-    echo "<a href=\"" . $coinbaseOauth->createAuthorizeUrl("balance", "buttons") . "\">Connect with Coinbase</a>";
+    echo "<a href=\"" . $coinbaseOauth->createAuthorizeUrl("user", "balance", "buttons") . "\">Connect with Coinbase</a>";
 }
