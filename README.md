@@ -16,7 +16,7 @@ Then, add the following to your PHP script:
 
 ## Usage
 
-Start by [enabling an API Key on your account](https://coinbase.com/account/integrations).
+Start by [enabling an API Key on your account](https://coinbase.com/settings/api).
 
 Next, create an instance of the client using the `Coinbase::withApiKey` method:
 
