@@ -16,7 +16,7 @@ Then, add the following to your PHP script:
 
 ## Usage
 
-Start by [enabling an API Key on your account](https://coinbase.com/account/integrations).
+Start by [enabling an API Key on your account](https://coinbase.com/settings/api).
 
 Next, create an instance of the client using the `Coinbase::withApiKey` method:
 
@@ -290,3 +290,10 @@ For this reason, API access is disabled on all Coinbase accounts by default.  If
 ## Testing
 
 If you'd like to contribute code or modify this library, you can run the test suite by executing `/path/to/coinbase-php/test/Coinbase.php` in a web browser or on the command line with `php`.
+
+First, init the submodule from the root of the repo using these commands:
+    
+    git submodule init
+    git submodule sync
+    git submodule update
+
