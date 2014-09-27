@@ -637,3 +637,4 @@ class TestOfCoinbase extends UnitTestCase {
         }
     }
 }
+?>

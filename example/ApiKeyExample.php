@@ -8,3 +8,4 @@ $_API_SECRET = "[redacted]";
 $coinbase = Coinbase::withApiKey($_API_KEY, $_API_SECRET);
 echo 'Balance: ' . $coinbase->getBalance() . '<br>';
 echo $coinbase->createButton("Alpaca socks", "10.00", "CAD")->embedHtml;
+?>

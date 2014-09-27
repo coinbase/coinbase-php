@@ -36,3 +36,4 @@ if(isset($_GET['code'])) {
     // You can pass as many scopes as you would like
     echo "<a href=\"" . $coinbaseOauth->createAuthorizeUrl("user", "balance", "buttons") . "\">Connect with Coinbase</a>";
 }
+?>

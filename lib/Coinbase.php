@@ -16,3 +16,5 @@ require_once(dirname(__FILE__) . '/Coinbase/Authentication.php');
 require_once(dirname(__FILE__) . '/Coinbase/SimpleApiKeyAuthentication.php');
 require_once(dirname(__FILE__) . '/Coinbase/OAuthAuthentication.php');
 require_once(dirname(__FILE__) . '/Coinbase/ApiKeyAuthentication.php');
+
+?>

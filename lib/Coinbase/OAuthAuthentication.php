@@ -19,3 +19,5 @@ class Coinbase_OAuthAuthentication extends Coinbase_Authentication
         return $data;
     }
 }
+
+?>

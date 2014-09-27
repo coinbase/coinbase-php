@@ -19,3 +19,5 @@ class Coinbase_Exception extends Exception
         return $this->http_code;
     }
 }
+
+?>

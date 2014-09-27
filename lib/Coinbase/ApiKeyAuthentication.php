@@ -19,3 +19,5 @@ class Coinbase_ApiKeyAuthentication extends Coinbase_Authentication
         return $data;
     }
 }
+
+?>
