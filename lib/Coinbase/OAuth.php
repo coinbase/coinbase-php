@@ -84,3 +84,5 @@ class Coinbase_OAuth
             "expire_time" => time() + 7200 );
     }
 }
+
+?>

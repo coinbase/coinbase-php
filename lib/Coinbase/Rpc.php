@@ -112,3 +112,5 @@ class Coinbase_Rpc
         return $json;
     }
 }
+
+?>
