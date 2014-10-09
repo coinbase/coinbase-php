@@ -2,7 +2,7 @@
 
 class Coinbase
 {
-    const API_BASE = 'https://coinbase.com/api/v1/';
+    const API_BASE = 'https://api.coinbase.com/v1/';
     private $_rpc;
     private $_authentication;
 
