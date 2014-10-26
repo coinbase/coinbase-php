@@ -8,11 +8,15 @@ This library supports both the [API key authentication method](https://coinbase.
 
 Obtain the latest version of the Coinbase PHP library with:
 
-    git clone https://github.com/coinbase/coinbase-php
+```sh
+$ git clone https://github.com/coinbase/coinbase-php
+```
 
 Then, add the following to your PHP script:
 
-    require_once("/path/to/coinbase-php/lib/Coinbase.php");
+```php
+require_once("/path/to/coinbase-php/lib/Coinbase.php");
+```
 
 ## Usage
 
@@ -180,7 +184,7 @@ The method signature is `public function createButton($name, $price, $currency, 
 
 ```php
 $response = $coinbase->createButton("Your Order #1234", "42.95", "EUR", "my custom tracking code for this order", array(
-            "description" => "1 widget at €42.95"
+            "description" => "1 widget at â‚¬42.95"
         ));
 echo $response->button->code;
 // '93865b9cae83706ae59220c013bc0afd'
