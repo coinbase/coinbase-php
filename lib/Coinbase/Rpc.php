@@ -3,7 +3,7 @@
 class Coinbase_Rpc
 {
     private $_requestor;
-    private $authentication;
+    private $_authentication;
 
     public function __construct($requestor, $authentication)
     {
