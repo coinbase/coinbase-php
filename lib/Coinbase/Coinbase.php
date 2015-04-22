@@ -9,17 +9,17 @@ class Coinbase
 
     public static function withApiKey($key, $secret)
     {
-        return new Coinbase(new Coinbase_ApiKeyAuthentication($key, $secret));
+        return new static(new Coinbase_ApiKeyAuthentication($key, $secret));
     }
 
     public static function withSimpleApiKey($key)
     {
-        return new Coinbase(new Coinbase_SimpleApiKeyAuthentication($key));
+        return new static(new Coinbase_SimpleApiKeyAuthentication($key));
     }
 
     public static function withOAuth($oauth, $tokens)
     {
-        return new Coinbase(new Coinbase_OAuthAuthentication($oauth, $tokens));
+        return new static(new Coinbase_OAuthAuthentication($oauth, $tokens));
     }
 
     // This constructor is deprecated.
@@ -49,13 +49,13 @@ class Coinbase
             }
         }
 
-        $this->_rpc = new Coinbase_Rpc(new Coinbase_Requestor(), $this->_authentication);
+        $this->_rpc = new Coinbase_Rpc(new Coinbase_Requestor(), $this->_authentication, static::API_BASE);
     }
 
     // Used for unit testing only
     public function setRequestor($requestor)
     {
-        $this->_rpc = new Coinbase_Rpc($requestor, $this->_authentication);
+        $this->_rpc = new Coinbase_Rpc($requestor, $this->_authentication, static::API_BASE);
         return $this;
     }
 

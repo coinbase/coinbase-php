@@ -8,6 +8,7 @@ require_once(dirname(__FILE__) . '/Coinbase/Exception.php');
 require_once(dirname(__FILE__) . '/Coinbase/ApiException.php');
 require_once(dirname(__FILE__) . '/Coinbase/ConnectionException.php');
 require_once(dirname(__FILE__) . '/Coinbase/Coinbase.php');
+require_once(dirname(__FILE__) . '/Coinbase/CoinbaseSandBox.php');
 require_once(dirname(__FILE__) . '/Coinbase/Requestor.php');
 require_once(dirname(__FILE__) . '/Coinbase/Rpc.php');
 require_once(dirname(__FILE__) . '/Coinbase/OAuth.php');
