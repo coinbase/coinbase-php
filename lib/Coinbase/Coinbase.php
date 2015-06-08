@@ -3,6 +3,7 @@
 class Coinbase
 {
     const API_BASE = 'https://api.coinbase.com/v1/';
+    const SANDBOX_API_BASE = 'https://api.sandbox.coinbase.com/v1/';
     private $_rpc;
     private $_authentication;
 
@@ -23,7 +24,7 @@ class Coinbase
     }
 
     // This constructor is deprecated.
-    public function __construct($authentication, $tokens=null, $apiKeySecret=null)
+    public function __construct($authentication, $tokens=null, $apiKeySecret=null, $sandbox=FALSE)
     {
         // First off, check for a legit authentication class type
         if (is_a($authentication, 'Coinbase_Authentication')) {
@@ -49,7 +50,7 @@ class Coinbase
             }
         }
 
-        $this->_rpc = new Coinbase_Rpc(new Coinbase_Requestor(), $this->_authentication);
+        $this->_rpc = new Coinbase_Rpc(new Coinbase_Requestor(), $this->_authentication, $sandbox);
     }
 
     // Used for unit testing only

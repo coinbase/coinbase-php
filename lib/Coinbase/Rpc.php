@@ -5,17 +5,21 @@ class Coinbase_Rpc
     private $_requestor;
     private $authentication;
 
-    public function __construct($requestor, $authentication)
+    public function __construct($requestor, $authentication, $sandbox=FALSE)
     {
         $this->_requestor = $requestor;
         $this->_authentication = $authentication;
+        $this->_sandbox = $sandbox;
     }
 
     public function request($method, $url, $params)
     {
+        // Set endpoint.
+        $api_base = ($this->_sandbox) ? Coinbase::SANDBOX_API_BASE : Coinbase::API_BASE;
+
         // Create query string
         $queryString = http_build_query($params);
-        $url = Coinbase::API_BASE . $url;
+        $url = $api_base . $url;
 
         // Initialize CURL
         $curl = curl_init();
