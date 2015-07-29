@@ -1,5 +1,6 @@
 language: php
 sudo: false
+install: composer install
 
 php:
     - 5.5
