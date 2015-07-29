@@ -57,7 +57,7 @@ class ResourceCollection implements \IteratorAggregate, \Countable, \ArrayAccess
         return (Boolean) $this->nextUri;
     }
 
-    public function mergePreviousPage(self $previousPage)
+    public function mergePreviousPage(ResourceCollection $previousPage)
     {
         $resources = array_reverse($previousPage->all());
         foreach ($resources as $resource) {
@@ -67,7 +67,7 @@ class ResourceCollection implements \IteratorAggregate, \Countable, \ArrayAccess
         $this->previousUri = $previousPage->getPreviousUri();
     }
 
-    public function mergeNextPage(self $nextPage)
+    public function mergeNextPage(ResourceCollection $nextPage)
     {
         foreach ($nextPage as $resource) {
             $this->add($resource);
