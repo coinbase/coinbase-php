@@ -1,0 +1,289 @@
+<?php
+
+namespace Coinbase\Wallet\Tests;
+
+use Coinbase\Wallet\Client;
+use Coinbase\Wallet\Configuration;
+use Coinbase\Wallet\Exception\ExpiredTokenException;
+use Coinbase\Wallet\Exception\HttpException;
+use Coinbase\Wallet\Exception\InvalidRequestException;
+use Coinbase\Wallet\Exception\InvalidTokenException;
+use Coinbase\Wallet\Exception\RevokedTokenException;
+use Coinbase\Wallet\Resource\Account;
+use Coinbase\Wallet\Resource\Address;
+use Coinbase\Wallet\Resource\CurrentUser;
+use Coinbase\Wallet\Resource\PaymentMethod;
+use Coinbase\Wallet\Resource\ResourceCollection;
+use Coinbase\Wallet\Resource\User;
+use Coinbase\Wallet\Value\Money;
+
+/**
+ * @group integration
+ */
+class ClientIntegrationTest extends \PHPUnit_Framework_TestCase
+{
+    /** @var Client */
+    private $client;
+    private $accounts = [];
+
+    public static function setUpBeforeClass()
+    {
+        if (!isset($_SERVER['CB_API_KEY']) || !isset($_SERVER['CB_API_SECRET'])) {
+            self::markTestSkipped(
+                'Environment variables CB_API_KEY and/or CB_API_SECRET are missing'
+            );
+        }
+    }
+
+    protected function setUp()
+    {
+        $configuration = Configuration::apiKey(
+            $_SERVER['CB_API_KEY'],
+            $_SERVER['CB_API_SECRET']
+        );
+
+        $configuration->setApiUrl(Configuration::SANDBOX_API_URL);
+
+        $this->client = Client::create($configuration);
+    }
+
+    protected function tearDown()
+    {
+        while ($account = array_pop($this->accounts)) {
+            try {
+                $this->client->deleteAccount($account);
+            } catch (HttpException $e) {
+                // pass
+            }
+        }
+
+        $this->client = null;
+    }
+
+    public function testOAuthAuthentication()
+    {
+        if (!isset($_SERVER['CB_OAUTH_ACCESS_TOKEN'])) {
+            $this->markTestSkipped('Environment variable CB_OAUTH_ACCESS_TOKEN is missing');
+        }
+
+        $configuration = Configuration::oauth($_SERVER['CB_OAUTH_ACCESS_TOKEN']);
+        $configuration->setApiUrl(Configuration::SANDBOX_API_URL);
+        $client = Client::create($configuration);
+
+        try {
+            $user = $client->getCurrentUser();
+            $this->assertInstanceOf(CurrentUser::class, $user);
+        } catch (ExpiredTokenException $e) {
+            $this->markTestSkipped('The OAuth token has expired');
+        } catch (InvalidTokenException $e) {
+            $this->markTestSkipped('The OAuth token is invalid');
+        } catch (RevokedTokenException $e) {
+            $this->markTestSkipped('The OAuth token is revoked');
+        }
+    }
+
+    public function testOAuthRefreshToken()
+    {
+        if (!isset($_SERVER['CB_OAUTH_ACCESS_TOKEN']) || !isset($_SERVER['CB_OAUTH_REFRESH_TOKEN'])) {
+            $this->markTestSkipped('Environment variables CB_OAUTH_ACCESS_TOKEN and/or CB_OAUTH_REFRESH_TOKEN are missing');
+        }
+
+        $configuration = Configuration::oauth(
+            $_SERVER['CB_OAUTH_ACCESS_TOKEN'],
+            $_SERVER['CB_OAUTH_REFRESH_TOKEN']
+        );
+
+        $configuration->setApiUrl(Configuration::SANDBOX_API_URL);
+        $client = Client::create($configuration);
+
+        try {
+            $client->refreshAuthentication();
+        } catch (InvalidRequestException $e) {
+            $this->markTestSkipped('The OAuth token is invalid');
+        }
+    }
+
+    public function testGetCurrencies()
+    {
+        $data = $this->client->getCurrencies();
+
+        $this->assertInternalType('array', $data);
+    }
+
+    public function testGetExchangeRates()
+    {
+        $data = $this->client->getExchangeRates();
+
+        $this->assertInternalType('array', $data);
+    }
+
+    public function testGetBuyPrice()
+    {
+        $price = $this->client->getBuyPrice();
+
+        $this->assertInstanceOf(Money::class, $price);
+    }
+
+    public function testGetSellPrice()
+    {
+        $price = $this->client->getSellPrice();
+
+        $this->assertInstanceOf(Money::class, $price);
+    }
+
+    public function testGetSpotPrice()
+    {
+        $price = $this->client->getSpotPrice();
+
+        $this->assertInstanceOf(Money::class, $price);
+    }
+
+    public function testGetCurrentUser()
+    {
+        $user = $this->client->getCurrentUser();
+        $this->assertInstanceOf(User::class, $user);
+        $this->assertNotEmpty($user->getId());
+    }
+
+    public function testGetUser()
+    {
+        $user = $this->client->getCurrentUser();
+        $user = $this->client->getUser($user->getId());
+        $this->assertInstanceOf(User::class, $user);
+        $this->assertNotEmpty($user->getId());
+    }
+
+    public function testUpdateCurrentUser()
+    {
+        $user = $this->client->getCurrentUser();
+        $user->setName('John Doe' === $user->getName() ? 'Jane Doe' : 'John Doe');
+        $this->client->updateCurrentUser($user);
+    }
+
+    public function testCreateAccountInvalid()
+    {
+        $account = new Account();
+
+        try {
+            $this->client->createAccount($account);
+            $this->accounts[] = $account;
+            $this->fail();
+        } catch (HttpException $e) {
+            $this->assertNotEmpty($e->getErrors());
+        }
+    }
+
+    public function testCreateAccount()
+    {
+        $account = $this->createAccount();
+        $this->assertNotEmpty($account->getId());
+    }
+
+    public function testSetPrimaryAccount()
+    {
+        $this->accounts[] = $this->client->getPrimaryAccount();
+
+        $account = $this->createAccount();
+        $this->client->setPrimaryAccount($account);
+        $this->assertTrue($account->isPrimary());
+    }
+
+    public function testUpdateAccount()
+    {
+        $account = $this->createAccount();
+        $account->setName('foo');
+        $this->client->updateAccount($account);
+
+        $account->setName('bar');
+        $this->client->refreshAccount($account);
+        $this->assertEquals('foo', $account->getName());
+    }
+
+    public function testLoadNextAccounts()
+    {
+        $this->createAccount();
+        $this->createAccount();
+
+        $accounts = $this->client->getAccounts(['limit' => 1]);
+        $this->assertCount(1, $accounts);
+
+        $this->client->loadNextAccounts($accounts, ['limit' => 1]);
+        $this->assertCount(2, $accounts);
+    }
+
+    public function testDeleteAccount()
+    {
+        $account = $this->createAccount();
+        $this->client->deleteAccount($account);
+    }
+
+    public function testCreateAddress()
+    {
+        $account = $this->createAccount();
+        $address = new Address();
+        $this->client->createAccountAddress($account, $address);
+        $this->assertNotEmpty($address->getId());
+    }
+
+    public function testLoadNextAddresses()
+    {
+        $account = $this->createAccount();
+        $this->client->createAccountAddress($account, new Address());
+        sleep(1);
+        $this->client->createAccountAddress($account, new Address());
+        sleep(1);
+
+        $addresses = $this->client->getAccountAddresses($account, ['limit' => 1]);
+        $this->assertCount(1, $addresses);
+
+        $this->client->loadNextAddresses($addresses, ['limit' => 1]);
+        $this->assertCount(2, $addresses);
+    }
+
+    public function testRefreshAddress()
+    {
+        $account = $this->createAccount();
+        $address = new Address();
+        $address->setName('foo');
+        $this->client->createAccountAddress($account, $address);
+
+        $address->setName('bar');
+        $this->client->refreshAddress($address);
+
+        $this->assertEquals('foo', $address->getName());
+    }
+
+    public function testGetAddressTransactions()
+    {
+        $account = $this->createAccount();
+        $address = new Address();
+        $address->setName('foo');
+        $this->client->createAccountAddress($account, $address);
+
+        $transactions = $this->client->getAddressTransactions($address);
+        $this->assertEmpty($transactions);
+    }
+
+    public function testGetPaymentMethods()
+    {
+        $paymentMethods = $this->client->getPaymentMethods();
+        $this->assertInstanceOf(ResourceCollection::class, $paymentMethods);
+
+        if (!isset($paymentMethods[0])) {
+            $this->markTestSkipped('User has no payment methods');
+        }
+
+        $this->assertInstanceOf(PaymentMethod::class, $paymentMethods[0]);
+    }
+
+    // private
+
+    private function createAccount()
+    {
+        $this->accounts[] = $account = new Account();
+        $account->setName('test'.time());
+        $this->client->createAccount($account);
+
+        return $account;
+    }
+}

@@ -1,0 +1,31 @@
+<phpunit
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.5/phpunit.xsd"
+        backupGlobals="false"
+        backupStaticAttributes="false"
+        colors="true"
+        convertErrorsToExceptions="true"
+        convertNoticesToExceptions="true"
+        convertWarningsToExceptions="true">
+    <testsuites>
+        <testsuite name="Coinbase PHP">
+            <directory suffix="Test.php">tests/</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">src/</directory>
+        </whitelist>
+    </filter>
+    <groups>
+        <exclude>
+            <group>integration</group>
+        </exclude>
+    </groups>
+    <php>
+        <!--<server name="CB_API_KEY" value=""/>-->
+        <!--<server name="CB_API_SECRET" value=""/>-->
+        <!--<server name="CB_OAUTH_ACCESS_TOKEN" value=""/>-->
+        <!--<server name="CB_OAUTH_REFRESH_TOKEN" value=""/>-->
+    </php>
+</phpunit>
