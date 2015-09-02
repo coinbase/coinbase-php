@@ -377,7 +377,7 @@ use Coinbase\Wallet\Resource\Transaction;
 use Coinbase\Wallet\Value\Money;
 
 $transaction = Transaction::send();
-$transaction->setTo($bitcoinAddress);
+$transaction->setToBitcoinAddress('ADDRESS');
 $transaction->setAmount(new Money(5, CurrencyCode::USD));
 $transaction->setDescription('Your first bitcoin!');
 
