@@ -93,8 +93,12 @@ class Client
         return $this->getAndMapData('/v2/currencies', $params);
     }
 
-    public function getExchangeRates(array $params = [])
+    public function getExchangeRates($currency = null, array $params = [])
     {
+        if ($currency) {
+            $params['currency'] = $currency;
+        }
+
         return $this->getAndMapData('/v2/exchange-rates', $params);
     }
 
