@@ -33,6 +33,8 @@ class ClientIntegrationTest extends \PHPUnit_Framework_TestCase
                 'Environment variables CB_API_KEY and/or CB_API_SECRET are missing'
             );
         }
+
+        date_default_timezone_set('America/New_York');
     }
 
     protected function setUp()
@@ -262,6 +264,12 @@ class ClientIntegrationTest extends \PHPUnit_Framework_TestCase
 
         $transactions = $this->client->getAddressTransactions($address);
         $this->assertEmpty($transactions);
+    }
+
+    public function testGetAccountTransactions()
+    {
+        $account      = $this->client->getPrimaryAccount();
+        $transactions = $this->client->getAccountTransactions($account);
     }
 
     public function testGetPaymentMethods()
