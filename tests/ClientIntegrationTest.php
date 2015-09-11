@@ -114,9 +114,10 @@ class ClientIntegrationTest extends \PHPUnit_Framework_TestCase
 
     public function testGetExchangeRates()
     {
-        $data = $this->client->getExchangeRates();
+        $data = $this->client->getExchangeRates('CAD');
 
         $this->assertInternalType('array', $data);
+        $this->assertEquals('CAD', $data['currency']);
     }
 
     public function testGetBuyPrice()
