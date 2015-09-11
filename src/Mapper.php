@@ -22,6 +22,7 @@ use Coinbase\Wallet\Resource\Sell;
 use Coinbase\Wallet\Resource\Transaction;
 use Coinbase\Wallet\Resource\User;
 use Coinbase\Wallet\Resource\Withdrawal;
+use Coinbase\Wallet\Resource\BitcoinNetwork;
 use Coinbase\Wallet\Value\Fee;
 use Coinbase\Wallet\Value\Money;
 use Coinbase\Wallet\Value\Network;
@@ -757,6 +758,8 @@ class Mapper
                 return $expanded ? $this->injectUser($data) : new User($data['resource_path']);
             case ResourceType::WITHDRAWAL:
                 return $expanded ? $this->injectWithdrawal($data) : new Withdrawal($data['resource_path']);
+            case ResourceType::BITCOIN_NETWORK:
+                return new BitcoinNetwork();
             default:
                 throw new RuntimeException('Unrecognized resource type: '.$type);
         }
