@@ -23,6 +23,11 @@ class MapperTest extends \PHPUnit_Framework_TestCase
     /** @var Mapper */
     private $mapper;
 
+    public static function setUpBeforeClass()
+    {
+        date_default_timezone_set('America/New_York');
+    }
+
     protected function setUp()
     {
         $this->mapper = new Mapper();

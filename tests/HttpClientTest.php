@@ -18,6 +18,11 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
     /** @var HttpClient */
     private $client;
 
+    public static function setUpBeforeClass()
+    {
+        date_default_timezone_set('America/New_York');
+    }
+
     protected function setUp()
     {
         $this->transport = $this->getMock(ClientInterface::class);
