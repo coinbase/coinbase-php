@@ -659,6 +659,14 @@ $orders = $client->getCheckoutOrders($checkout);
 $order = $client->createNewCheckoutOrder($checkout);
 ```
 
+### [Verifying merchant callbacks](https://developers.coinbase.com/docs/merchants/callbacks)
+
+```php
+$raw_body = file_get_contents('php://input');
+$signature = $_SERVER['HTTP_X_SIGNATURE'];
+$authenticity = $client->verifyCallback($raw_body, $signature); // boolean
+```
+
 ## Contributing and testing
 
 The test suite is built using PHPUnit. Run the suite of unit tests by running
