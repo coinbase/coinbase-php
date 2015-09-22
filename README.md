@@ -390,16 +390,18 @@ $client->createAccountTransaction($account, $transaction);
 use Coinbase\Wallet\Resource\Transaction;
 use Coinbase\Wallet\Resource\Account;
 
-$new_account = new Account();
-$new_account->setName('New Account');
-$client->createAccount($new_account);
+$fromAccount = Account::reference($accountId);
+
+$toAccount = new Account();
+$toAccount->setName('New Account');
+$client->createAccount($toAccount);
 
 $transaction = Transaction::transfer();
-$transaction->setTo($new_account);
+$transaction->setTo($toAccount);
 $transaction->setBitcoinAmount(1);
 $transaction->setDescription('Your first bitcoin!');
 
-$client->createAccountTransaction($from_account, $transaction);
+$client->createAccountTransaction($fromAccount, $transaction);
 ```
 
 **Request funds**
