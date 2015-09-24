@@ -16,16 +16,22 @@ class Resource
     /** @var array */
     private $rawData;
 
-    public function __construct($resourceType, $resourcePath = null, $id = null)
+    public function __construct($resourceType, $resourcePathOrAttrs = null, $id = null)
     {
         $this->resource = $resourceType;
-        $this->resourcePath = $resourcePath;
         $this->id = $id;
-
-        // extract id from resource path
-        if (!$id && $resourcePath) {
-            $parts = explode('/', $resourcePath);
-            $this->id = array_pop($parts);
+        if(is_array($resourcePathOrAttrs))
+        {
+            $this->updateAttributes($resourcePathOrAttrs);
+        }
+        else
+        {
+            $this->resourcePath = $resourcePathOrAttrs;
+            // extract id from resource path
+            if (!$id && $resourcePathOrAttrs) {
+                $parts = explode('/', $resourcePathOrAttrs);
+                $this->id = array_pop($parts);
+            }
         }
     }
 
@@ -52,5 +58,17 @@ class Resource
     public function isExpanded()
     {
         return (Boolean) $this->rawData;
+    }
+
+    public function updateAttributes($attrHash)
+    {
+      foreach ($attrHash as $attr => $val)
+      {
+        $action = "set" . ucfirst($attr);
+        if(is_callable(array($this, $action)))
+        {
+          $this->$action($val);
+        }
+      }
     }
 }

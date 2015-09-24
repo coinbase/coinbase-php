@@ -18,6 +18,30 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(TransactionType::SEND, $transaction->getType());
     }
 
+    public function testSendWithAttrs()
+    {
+        $to = new Email('test@example.com');
+        $amount = new Money(1, CurrencyCode::BTC);
+        $transaction = Transaction::send(array(
+            'to'     => $to,
+            'amount' => $amount
+        ));
+        $this->assertEquals(TransactionType::SEND, $transaction->getType());
+        $this->assertEquals($amount, $transaction->getAmount());
+        $this->assertEquals($to, $transaction->getTo());
+    }
+
+    public function testSendWithAttrs2()
+    {
+        $transaction = Transaction::send([
+            'toEmail' => 'test@example.com',
+            'bitcoinAmount' => 1
+        ]);
+
+        $this->assertEquals(new Money(1, CurrencyCode::BTC), $transaction->getAmount());
+        $this->assertEquals(new Email('test@example.com'), $transaction->getTo());
+    }
+
     public function testTransfer()
     {
         $transaction = Transaction::transfer();

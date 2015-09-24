@@ -64,9 +64,10 @@ use Coinbase\Wallet\Enum\Param;
 use Coinbase\Wallet\Exception\TwoFactorRequiredException;
 use Coinbase\Wallet\Resource\Transaction;
 
-$transaction = Transaction::send();
-$transaction->setToEmail('test@test.com');
-$transaction->setBitcoinAmount(1);
+$transaction = Transaction::send([
+    'toEmail' => 'test@test.com',
+    'bitcoinAmount' => 1
+]);
 
 $account = $client->getPrimaryAccount();
 try {
@@ -163,11 +164,14 @@ overhead of requesting a resource from the API.
 use Coinbase\Wallet\Resource\Deposit;
 use Coinbase\Wallet\Resource\PaymentMethod;
 
-$deposit = new Deposit();
-$deposit->setPaymentMethod(PaymentMethod::reference($paymentMethodId));
+$deposit = new Deposit([
+    'paymentMethod' => PaymentMethod::reference($paymentMethodId)
+]);
 
 // or use the convenience method
-$deposit->setPaymentMethodId($paymentMethodId);
+$deposit = new Deposit([
+    'paymentMethodId' => $paymentMethodId
+]);
 ```
 
 ### Responses
@@ -307,8 +311,9 @@ $client->setPrimaryAccount($account);
 ```php
 use Coinbase\Wallet\Resource\Account;
 
-$account = new Account();
-$account->setName('New Account');
+$account = new Account([
+    'name' => 'New Account'
+]);
 $client->createAccount($account);
 ```
 
@@ -350,8 +355,9 @@ $transactions = $client->getAddressTransactions($address);
 ```php
 use Coinbase\Wallet\Resource\Address;
 
-$address = new Address();
-$address->setName('New Address');
+$address = new Address([
+    'name' => 'New Address'
+]);
 $client->createAccountAddress($account, $address);
 ```
 
@@ -376,10 +382,11 @@ use Coinbase\Wallet\Enum\CurrencyCode;
 use Coinbase\Wallet\Resource\Transaction;
 use Coinbase\Wallet\Value\Money;
 
-$transaction = Transaction::send();
-$transaction->setToBitcoinAddress('ADDRESS');
-$transaction->setAmount(new Money(5, CurrencyCode::USD));
-$transaction->setDescription('Your first bitcoin!');
+$transaction = Transaction::send([
+    'toBitcoinAddress' => 'ADDRESS',
+    'amount'           => new Money(5, CurrencyCode::USD),
+    'description'      => 'Your first bitcoin!'
+]);
 
 $client->createAccountTransaction($account, $transaction);
 ```
@@ -392,14 +399,16 @@ use Coinbase\Wallet\Resource\Account;
 
 $fromAccount = Account::reference($accountId);
 
-$toAccount = new Account();
-$toAccount->setName('New Account');
+$toAccount = new Account([
+    'name' => 'New Account'
+]);
 $client->createAccount($toAccount);
 
-$transaction = Transaction::transfer();
-$transaction->setTo($toAccount);
-$transaction->setBitcoinAmount(1);
-$transaction->setDescription('Your first bitcoin!');
+$transaction = Transaction::transfer([
+    'to'            => $toAccount,
+    'bitcoinAmount' => 1,
+    'description'   => 'Your first bitcoin!'
+]);
 
 $client->createAccountTransaction($fromAccount, $transaction);
 ```
@@ -411,9 +420,10 @@ use Coinbase\Wallet\Enum\CurrencyCode;
 use Coinbase\Wallet\Resource\Transaction;
 use Coinbase\Wallet\Value\Money;
 
-$transaction = Transaction::request();
-$transaction->setAmount(new Money(8, CurrencyCode::USD));
-$transaction->setDescription('Burrito');
+$transaction = Transaction::request([
+    'amount'      => new Money(8, CurrencyCode::USD),
+    'description' => 'Burrito'
+]);
 
 $client->createAccountTransaction($transaction);
 ```
@@ -455,8 +465,9 @@ $buy = $client->getAccountBuy($account, $buyId);
 ```php
 use Coinbase\Wallet\Resource\Buy;
 
-$buy = new Buy();
-$buy->setBitcoinAmount(1);
+$buy = new Buy([
+    'bitcoinAmount' => 1
+]);
 
 $client->createAccountBuy($account, $buy);
 ```
@@ -491,8 +502,9 @@ $sell = $client->getAccountSell($account, $sellId);
 ```php
 use Coinbase\Wallet\Resource\Sell;
 
-$sell = new Sell();
-$sell->setBitcoinAmount(1);
+$sell = new Sell([
+    'bitcoinAmount' => 1
+]);
 
 $client->createAccountSell($account, $sell);
 ```
@@ -529,8 +541,9 @@ use Coinbase\Wallet\Enum\CurrencyCode;
 use Coinbase\Wallet\Resource\Deposit;
 use Coinbase\Wallet\Value\Money;
 
-$deposit = new Deposit();
-$deposit->setAmount(new Money(10, CurrencyCode::USD));
+$deposit = new Deposit([
+    'amount' => new Money(10, CurrencyCode::USD)
+]);
 
 $client->createAccountDeposit($account, $deposit);
 ```
@@ -567,8 +580,9 @@ use Coinbase\Wallet\Enum\CurrencyCode;
 use Coinbase\Wallet\Resource\Withdrawal;
 use Coinbase\Wallet\Value\Money;
 
-$withdrawal = new Withdrawal();
-$withdrawal->setAmount(new Money(10, CurrencyCode::USD));
+$withdrawal = new Withdrawal([
+    'amount' => new Money(10, CurrencyCode::USD)
+]);
 
 $client->createAccountWithdrawal($account, $withdrawal);
 ```
@@ -626,9 +640,10 @@ $order = $client->getOrder($orderId);
 use Coinbase\Wallet\Resource\Order;
 use Coinbase\Wallet\Value\Money;
 
-$order = new Order();
-$order->setName('Order #1234');
-$order->setAmount(Money::btc(1));
+$order = new Order([
+    'name' => 'Order #1234',
+    'amount' => Money::btc(1)
+]);
 
 $client->createOrder($order);
 ```
