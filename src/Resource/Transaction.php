@@ -86,9 +86,9 @@ class Transaction extends Resource
      *
      * @return Transaction A new send transaction
      */
-    public static function send()
+    public static function send($attrs = null)
     {
-        return new static(TransactionType::SEND);
+        return new static(TransactionType::SEND, $attrs);
     }
 
     /**
@@ -96,9 +96,9 @@ class Transaction extends Resource
      *
      * @return Transaction A new transfer transaction
      */
-    public static function transfer()
+    public static function transfer($attrs = null)
     {
-        return new static(TransactionType::TRANSFER);
+        return new static(TransactionType::TRANSFER, $attrs);
     }
 
     /**
@@ -106,9 +106,9 @@ class Transaction extends Resource
      *
      * @return Transaction A new request transaction
      */
-    public static function request()
+    public static function request($attrs = null)
     {
-        return new static(TransactionType::REQUEST);
+        return new static(TransactionType::REQUEST, $attrs);
     }
 
     public function __construct($type = null, $resourcePath = null)
