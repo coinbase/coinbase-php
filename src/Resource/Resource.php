@@ -64,11 +64,17 @@ class Resource
     {
       foreach ($attrHash as $attr => $val)
       {
-        $action = "set" . ucfirst($attr);
+        $action = "set" . ucfirst(self::underscoreToCamelCase($attr));
         if(is_callable(array($this, $action)))
         {
           $this->$action($val);
         }
       }
+    }
+
+    private static function underscoreToCamelCase( $string )
+    {
+        $func = create_function('$c', 'return strtoupper($c[1]);');
+        return preg_replace_callback('/_([a-z])/', $func, $string);
     }
 }

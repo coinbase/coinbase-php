@@ -19,13 +19,15 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
       $this->assertNotSame("this is the description", $checkout->getDescription());
       $this->assertNotSame("this is the name", $checkout->getName());
       $attrs = array(
-          'name'               => 'this is the name',
-          'description'        => 'this is the description',
-          'not_existant_attr'  => 'some other thing'
+          'name'                    => 'this is the name',
+          'description'             => 'this is the description',
+          'customer_defined_amount' => true,
+          'not_existant_attr'       => 'some other thing'
       );
       $checkout->updateAttributes($attrs);
       $this->assertSame("this is the description", $checkout->getDescription());
       $this->assertSame("this is the name", $checkout->getName());
+      $this->assertSame(true, $checkout->isCustomerDefinedAmount());
     }
 
     public function testAttrHashConstructor()
