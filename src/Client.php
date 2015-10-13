@@ -36,7 +36,7 @@ use Coinbase\Wallet\Resource\Withdrawal;
  */
 class Client
 {
-    const VERSION = '2.1.2';
+    const VERSION = '2.2.0';
 
     private $http;
     private $mapper;
