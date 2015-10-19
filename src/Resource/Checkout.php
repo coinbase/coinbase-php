@@ -46,6 +46,9 @@ class Checkout extends Resource
     private $amountPresets;
 
     /** @var string */
+    private $callbackUrl;
+
+    /** @var string */
     private $successUrl;
 
     /** @var string */
@@ -190,6 +193,16 @@ class Checkout extends Resource
     public function setAmountPresets(array $amountPresets)
     {
         $this->amountPresets = $amountPresets;
+    }
+
+    public function getCallbackUrl()
+    {
+        return $this->callbackUrl;
+    }
+
+    public function setCallbackUrl($callbackUrl)
+    {
+        $this->callbackUrl = $callbackUrl;
     }
 
     public function getSuccessUrl()
