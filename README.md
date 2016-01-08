@@ -664,6 +664,21 @@ $client->refundOrder($order, CurrencyCode::BTC);
 $checkouts = $client->getCheckouts();
 ```
 
+#### Create checkout
+
+```php
+$params = array(
+    'name'               => 'My Order',
+    'amount'             => new Money(100, 'USD'),
+    'metadata'           => array( 'order_id' => $custom_order_id )
+);
+
+$checkout = new Checkout($params);
+$client->createCheckout($checkout);
+$code = $checkout->getEmbedCode();
+$redirect_url = "https://www.coinbase.com/checkouts/$code";
+```
+
 #### Get checkout
 
 ```php
