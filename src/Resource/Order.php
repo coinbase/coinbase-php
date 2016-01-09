@@ -46,6 +46,9 @@ class Order extends Resource
     private $bitcoinAmount;
 
     /** @var string */
+    private $notificationsUrl;
+
+    /** @var string */
     private $bitcoinUri;
 
     /** @var string */
@@ -156,6 +159,16 @@ class Order extends Resource
     public function getBitcoinAmount()
     {
         return $this->bitcoinAmount;
+    }
+
+    public function getNotificationsUrl()
+    {
+        return $this->notificationsUrl;
+    }
+
+    public function setNotificationsUrl($notificationsUrl)
+    {
+        $this->notificationsUrl = $notificationsUrl;
     }
 
     public function getBitcoinUri()

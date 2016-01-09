@@ -19,6 +19,7 @@ use Coinbase\Wallet\Resource\Sell;
 use Coinbase\Wallet\Resource\Transaction;
 use Coinbase\Wallet\Resource\User;
 use Coinbase\Wallet\Resource\Withdrawal;
+use Coinbase\Wallet\Resource\Notification;
 
 /**
  * A client for interacting with the Coinbase API.
@@ -690,6 +691,45 @@ class Client
     {
         $data = $this->mapper->fromCheckout($checkout);
         $this->postAndMap('/v2/checkouts', $data + $params, 'toCheckout', $checkout);
+    }
+
+    /**
+     * Lists notifications where the current user was the subscriber.
+     *
+     * Supports pagination parameters.
+     *
+     * @return ResourceCollection|Notification[]
+     */
+    public function getNotifications(array $params = [])
+    {
+        return $this->getAndMapCollection('/v2/notifications', $params, 'toNotifications');
+    }
+
+    public function loadNextNotifications(ResourceCollection $notifications, array $params = [])
+    {
+        $this->loadNext($notifications, $params, 'toNotifications');
+    }
+
+    /** @return Notification */
+    public function getNotification($notificationId, array $params = [])
+    {
+        return $this->getAndMap('/v2/notifications/'.$notificationId, $params, 'toNotification');
+    }
+
+    public function refreshNotification(Notification $notification, array $params = [])
+    {
+        $this->getAndMap($notification->getResourcePath(), $params, 'toNotification', $notification);
+    }
+
+    /**
+     * Create a Notification object from the body of a notification webhook
+     *
+     * @return Notification
+     */
+    public function parseNotification($webhook_body)
+    {
+        $data = json_decode($webhook_body, true);
+        return $this->mapper->injectNotification($data);
     }
 
     /**

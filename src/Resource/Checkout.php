@@ -46,6 +46,9 @@ class Checkout extends Resource
     private $amountPresets;
 
     /** @var string */
+    private $notificationsUrl;
+
+    /** @var string */
     private $successUrl;
 
     /** @var string */
@@ -190,6 +193,16 @@ class Checkout extends Resource
     public function setAmountPresets(array $amountPresets)
     {
         $this->amountPresets = $amountPresets;
+    }
+
+    public function getNotificationsUrl()
+    {
+        return $this->notificationsUrl;
+    }
+
+    public function setNotificationsUrl($notificationsUrl)
+    {
+        $this->notificationsUrl = $notificationsUrl;
     }
 
     public function getSuccessUrl()

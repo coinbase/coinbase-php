@@ -921,6 +921,14 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expected, $actual);
     }
 
+    public function testParseNotification()
+    {
+        $body = '{"id":"e5852770-ca8b-51be-b839-0b3aedc62252","type":"wallet:orders:paid","data":{"id":"146ed8ac-64c1-541e-8692-f9fa3d3d64d5","code":"3RTHN8KO","type":"order","name":"asdfasdf","description":"asdfasdfasdfasdf","amount":{"amount":"1.00","currency":"USD"},"receipt_url":"https://www.coinbase.com/orders/9c704d8a66a2204624ae7c39709db5f8/receipt","resource":"order","resource_path":"/v2/orders/146ed8ac-64c1-541e-8692-f9fa3d3d64d5","status":"paid","bitcoin_amount":{"amount":"0.00221000","currency":"BTC"},"payout_amount":null,"bitcoin_address":"1CHtgEP9YeDkkUQrdkmpGXdAe2LzP1esSg","refund_address":"1fnRUd2e9xk7KYv5uD4tdnnRnpvSZrbBb","bitcoin_uri":"bitcoin:1CHtgEP9YeDkkUQrdkmpGXdAe2LzP1esSg?amount=0.00221\\u0026r=https://www.coinbase.com/r/5690c45f57e9cd1211000079","notifications_url":null,"paid_at":"2016-01-09T08:27:36Z","mispaid_at":null,"expires_at":"2016-01-09T08:42:11Z","metadata":{},"created_at":"2016-01-09T08:27:11Z","updated_at":"2016-01-09T08:27:36Z","customer_info":null,"transaction":{"id":"4fbfcd5f-0252-57ac-be80-6b2037bda1c5","resource":"transaction","resource_path":"/v2/accounts/0d4b7e7f-5da8-506d-b0e1-8f5945d9d7f3/transactions/4fbfcd5f-0252-57ac-be80-6b2037bda1c5"},"mispayments":[],"refunds":[]},"user":{"id":"7eee8527-3439-52d9-98d6-a04c0d0dc6ce","resource":"user","resource_path":"/v2/users/7eee8527-3439-52d9-98d6-a04c0d0dc6ce"},"account":{"id":"0d4b7e7f-5da8-506d-b0e1-8f5945d9d7f3","resource":"account","resource_path":"/v2/accounts/0d4b7e7f-5da8-506d-b0e1-8f5945d9d7f3"},"delivery_attempts":0,"created_at":"2016-01-09T08:27:36Z","resource":"notification","resource_path":"/v2/notifications/e5852770-ca8b-51be-b839-0b3aedc62252"}';
+        $this->mapper->expects($this->any())
+            ->method('injectNotification')
+            ->with($this->any());
+    }
+
     public function testVerifyCallback()
     {
         $body = '{"order":{"id":null,"created_at":null,"status":"completed","event":null,"total_btc":{"cents":100000000,"currency_iso":"BTC"},"total_native":{"cents":1000,"currency_iso":"USD"},"total_payout":{"cents":1000,"currency_iso":"USD"},"custom":"123456789","receive_address":"mzVoQenSY6RTBgBUcpSBTBAvUMNgGWxgJn","button":{"type":"buy_now","name":"Test Item","description":null,"id":null},"transaction":{"id":"53bdfe4d091c0d74a7000003","hash":"4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b","confirmations":0}}}';
