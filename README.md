@@ -686,7 +686,7 @@ $order = $client->createNewCheckoutOrder($checkout);
 
 ```php
 $raw_body = file_get_contents('php://input');
-$signature = $_SERVER['HTTP_X_SIGNATURE'];
+$signature = $_SERVER['HTTP_CB_SIGNATURE'];
 $authenticity = $client->verifyCallback($raw_body, $signature); // boolean
 ```
 
