@@ -684,6 +684,8 @@ $order = $client->createNewCheckoutOrder($checkout);
 
 ### [Verifying merchant callbacks](https://developers.coinbase.com/docs/merchants/callbacks)
 
+Note: Only production callbacks can be verified. Callbacks issued by the sandbox will always return false below.
+
 ```php
 $raw_body = file_get_contents('php://input');
 $signature = $_SERVER['HTTP_CB_SIGNATURE'];
