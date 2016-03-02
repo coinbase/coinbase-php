@@ -285,6 +285,14 @@ class ClientIntegrationTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(PaymentMethod::class, $paymentMethods[0]);
     }
 
+    public function testGetHistoricPrices() {
+        $historicPrices = $this->client->getHistoricPrices('CAD');
+
+        $this->assertEquals("array", gettype($historicPrices));
+        $this->assertEquals('CAD', $historicPrices['currency']);
+        $this->assertEquals(365, sizeof($historicPrices['prices']));
+    }
+
     // private
 
     private function createAccount()

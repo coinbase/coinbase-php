@@ -129,6 +129,15 @@ class Client
         return $this->getAndMapMoney('/v2/prices/spot', $params);
     }
 
+    public function getHistoricPrices($currency = null, array $params = [])
+    {
+        if ($currency) {
+            $params['currency'] = $currency;
+        }
+
+        return $this->getAndMapData('/v2/prices/historic', $params);
+    }
+
     public function getTime(array $params = [])
     {
         return $this->getAndMapData('/v2/time', $params);
