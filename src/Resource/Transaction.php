@@ -36,6 +36,9 @@ class Transaction extends Resource
     /** @var string */
     private $description;
 
+    /** @var string */
+    private $fee;
+
     /** @var Boolean */
     private $instantExchange;
 
@@ -156,6 +159,16 @@ class Transaction extends Resource
     public function setDescription($description)
     {
         $this->description = $description;
+    }
+
+    public function getFee()
+    {
+        return $this->fee;
+    }
+
+    public function setFee($fee)
+    {
+        $this->fee = (string) $fee;
     }
 
     public function isInstantExchange()

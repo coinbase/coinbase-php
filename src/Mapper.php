@@ -123,7 +123,7 @@ class Mapper
         // filter
         $data = array_intersect_key(
             $this->extractData($transaction),
-            array_flip(['type', 'to', 'amount', 'description'])
+            array_flip(['type', 'to', 'amount', 'description', 'fee'])
         );
 
         // to

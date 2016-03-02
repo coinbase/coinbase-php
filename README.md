@@ -385,7 +385,8 @@ use Coinbase\Wallet\Value\Money;
 $transaction = Transaction::send([
     'toBitcoinAddress' => 'ADDRESS',
     'amount'           => new Money(5, CurrencyCode::USD),
-    'description'      => 'Your first bitcoin!'
+    'description'      => 'Your first bitcoin!',
+    'fee'              => '0.0001' // only required for transactions under BTC0.0001
 ]);
 
 $client->createAccountTransaction($account, $transaction);
