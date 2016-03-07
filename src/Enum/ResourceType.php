@@ -22,6 +22,7 @@ class ResourceType
     const USER = 'user';
     const WITHDRAWAL = 'withdrawal';
     const BITCOIN_NETWORK = 'bitcoin_network';
+    const NOTIFICATION = 'notification';
 
     private function __construct()
     {

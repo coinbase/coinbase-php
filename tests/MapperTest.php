@@ -5,6 +5,7 @@ namespace Coinbase\Wallet\Tests;
 use Coinbase\Wallet\Enum\CurrencyCode;
 use Coinbase\Wallet\Enum\TransactionType;
 use Coinbase\Wallet\Mapper;
+use Coinbase\Wallet\Resource\Account;
 use Coinbase\Wallet\Resource\Buy;
 use Coinbase\Wallet\Resource\Deposit;
 use Coinbase\Wallet\Resource\Email;
@@ -36,6 +37,27 @@ class MapperTest extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {
         $this->mapper = null;
+    }
+
+    public function testToNotification()
+    {
+        $response = $this->getMockResponse(['data' => self::$notification]);
+        $notification = $this->mapper->toNotification($response);
+
+        $this->assertEquals(self::$notification['id'], $notification->getId());
+        $this->assertEquals(self::$notification['type'], $notification->getType());
+        $this->assertEquals(1, $notification->getDeliveryAttempts());
+
+        $this->assertInstanceOf(Buy::class, $notification->getData());
+        $this->assertEquals(self::$notification['data']['id'], $notification->getData()->getId());
+
+        $this->assertInstanceOf(User::class, $notification->getUser());
+        $this->assertEquals(self::$notification['user']['id'], $notification->getUser()->getId());
+
+        $this->assertInstanceOf(Account::class, $notification->getAccount());
+        $this->assertEquals(self::$notification['account']['id'], $notification->getAccount()->getId());
+
+        $this->assertEquals(self::$notification, $notification->getRawData());
     }
 
     public function testToBuy()
@@ -258,5 +280,73 @@ class MapperTest extends \PHPUnit_Framework_TestCase
         'avatar_url' => 'https://images.coinbase.com/avatar?h=KphlECxEemoPGv3xtMSxqG2Ud7gEzke9mh0Ff3ifsiu9ggPwStQLCCuQfk6N%0AyY1p&s=128',
         'resource' => 'user',
         'resource_path' => '/v2/users/9d55bef5-47f1-5936-b771-b07c1d8140a2',
+    ];
+
+    private static $notification = [
+        "id"=> "6bf0ca21-0b2f-5e8a-b95e-7bd7eaccc338",
+        "type"=> "wallet:buys:completed",
+        "data"=> [
+          "id"=> "67e0eaec-07d7-54c4-a72c-2e92826897df",
+          "status"=> "completed",
+          "payment_method"=> [
+            "id"=> "83562370-3e5c-51db-87da-752af5ab9559",
+            "resource"=> "payment_method",
+            "resource_path"=> "/v2/payment-methods/83562370-3e5c-51db-87da-752af5ab9559"
+          ],
+          "transaction"=> [
+            "id"=> "441b9494-b3f0-5b98-b9b0-4d82c21c252a",
+            "resource"=> "transaction",
+            "resource_path"=> "/v2/accounts/2bbf394c-193b-5b2a-9155-3b4732659ede/transactions/441b9494-b3f0-5b98-b9b0-4d82c21c252a"
+          ],
+          "amount"=> [
+            "amount"=> "1.00000000",
+            "currency"=> "BTC"
+          ],
+          "total"=> [
+            "amount"=> "10.25",
+            "currency"=> "USD"
+          ],
+          "subtotal"=> [
+            "amount"=> "10.10",
+            "currency"=> "USD"
+          ],
+          "created_at"=> "2015-01-31T20:49:02Z",
+          "updated_at"=> "2015-02-11T16:54:02-08:00",
+          "resource"=> "buy",
+          "resource_path"=> "/v2/accounts/2bbf394c-193b-5b2a-9155-3b4732659ede/buys/67e0eaec-07d7-54c4-a72c-2e92826897df",
+          "committed"=> true,
+          "instant"=> false,
+          "fees"=> [
+            [
+              "type"=> "coinbase",
+              "amount"=> [
+                "amount"=> "0.00",
+                "currency"=> "USD"
+              ]
+            ],
+            [
+              "type"=> "bank",
+              "amount"=> [
+                "amount"=> "0.15",
+                "currency"=> "USD"
+              ]
+            ]
+          ],
+          "payout_at"=> "2015-02-18T16:54:00-08:00"
+        ],
+        "user"=> [
+          "id"=> "f01c821e-bb35-555f-a4da-548672963119",
+          "resource"=> "user",
+          "resource_path"=> "/v2/users/f01c821e-bb35-555f-a4da-548672963119"
+        ],
+        "account"=> [
+          "id"=> "8d5f086c-d7d5-58ee-890e-c09b3d8d4434",
+          "resource"=> "account",
+          "resource_path"=> "/v2/accounts/8d5f086c-d7d5-58ee-890e-c09b3d8d4434"
+        ],
+        "delivery_attempts"=> 1,
+        "created_at"=> "2015-11-10T19:15:06Z",
+        "resource"=> "notification",
+        "resource_path"=> "/v2/notifications/6bf0ca21-0b2f-5e8a-b95e-7bd7eaccc338"
     ];
 }

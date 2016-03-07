@@ -11,6 +11,7 @@ use Coinbase\Wallet\Exception\InvalidTokenException;
 use Coinbase\Wallet\Exception\RevokedTokenException;
 use Coinbase\Wallet\Resource\Account;
 use Coinbase\Wallet\Resource\Address;
+use Coinbase\Wallet\Resource\Notification;
 use Coinbase\Wallet\Resource\CurrentUser;
 use Coinbase\Wallet\Resource\PaymentMethod;
 use Coinbase\Wallet\Resource\ResourceCollection;
@@ -291,6 +292,17 @@ class ClientIntegrationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("array", gettype($historicPrices));
         $this->assertEquals('CAD', $historicPrices['currency']);
         $this->assertEquals(365, sizeof($historicPrices['prices']));
+    }
+
+    public function testGetNotifications() {
+        $notifications = $this->client->getNotifications();
+        $this->assertInstanceOf(ResourceCollection::class, $notifications);
+
+        if (!isset($notifications[0])) {
+            $this->markTestSkipped('User has no notifications');
+        }
+
+        $this->assertInstanceOf(Notification::class, $notifications[0]);
     }
 
     // private
