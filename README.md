@@ -16,6 +16,8 @@ the [older version][2] of this library.
 
 ## Installation
 
+Modify composer.json to refer to your project -- replace YOURPROJECT with your project name.
+
 Install the library using Composer.
 
     composer require coinbase/coinbase
