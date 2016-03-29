@@ -1,10 +1,4 @@
 {
-    "name": "coinbase/coinbase",
-    "description": "Coinbase API library",
-    "keywords": [ "bitcoin", "coinbase" ],
-    "homepage": "http://coinbase.com",
-    "type": "library",
-    "license": "MIT",
     "autoload": {
         "psr-4": { "Coinbase\\Wallet\\": "src/" }
     },
