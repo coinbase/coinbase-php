@@ -698,9 +698,9 @@ $orders = $client->getCheckoutOrders($checkout);
 $order = $client->createNewCheckoutOrder($checkout);
 ```
 
-### [Verifying merchant callbacks](https://developers.coinbase.com/docs/merchants/callbacks)
+### [Notifications webhook and verification](https://developers.coinbase.com/api/v2#notifications)
 
-Note: Only production callbacks can be verified. Callbacks issued by the sandbox will always return false below.
+Note: Only production notifications can be verified. Notifications issued by the sandbox will always return false below.
 
 ```php
 $raw_body = file_get_contents('php://input');
