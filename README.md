@@ -698,7 +698,7 @@ $orders = $client->getCheckoutOrders($checkout);
 $order = $client->createNewCheckoutOrder($checkout);
 ```
 
-### [Notifications webhook and verification](https://developers.coinbase.com/api/v2#notifications)
+### [Notifications webhook and verification](https://developers.coinbase.com/docs/wallet/notifications)
 
 Note: Only production notifications can be verified. Notifications issued by the sandbox will always return false below.
 
