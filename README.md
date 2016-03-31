@@ -16,9 +16,13 @@ the [older version][2] of this library.
 
 ## Installation
 
-Install the library using Composer.
+Install the library using Composer. Please read the [Composer Documentation](https://getcomposer.org/doc/01-basic-usage.md) if you are unfamiliar with Composer or dependency managers in general.
 
-    composer require coinbase/coinbase
+```json
+"require": {
+    "coinbase/coinbase": "~2.0"
+}
+```
 
 ## Authentication
 
