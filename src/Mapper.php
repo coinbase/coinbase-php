@@ -7,6 +7,7 @@ use Coinbase\Wallet\Exception\LogicException;
 use Coinbase\Wallet\Exception\RuntimeException;
 use Coinbase\Wallet\Resource\Account;
 use Coinbase\Wallet\Resource\Address;
+use Coinbase\Wallet\Resource\Application;
 use Coinbase\Wallet\Resource\BitcoinAddress;
 use Coinbase\Wallet\Resource\Buy;
 use Coinbase\Wallet\Resource\Checkout;
@@ -512,6 +513,11 @@ class Mapper
         return $this->injectResource($data, $address ?: new Address());
     }
 
+    private function injectApplication(array $data, Application $application = null)
+    {
+        return $this->injectResource($data, $application ?: new Application());
+    }
+
     private function injectTransaction(array $data, Transaction $transaction = null)
     {
         return $this->injectResource($data, $transaction ?: new Transaction());
@@ -754,6 +760,8 @@ class Mapper
                 return $expanded ? $this->injectAccount($data) : new Account($data['resource_path']);
             case ResourceType::ADDRESS:
                 return $expanded ? $this->injectAddress($data) : new Address($data['resource_path']);
+            case ResourceType::APPLICATION:
+                return $expanded ? $this->injectApplication($data) : new Application($data['resource_path']);
             case ResourceType::BITCOIN_ADDRESS:
                 return new BitcoinAddress($data['address']);
             case ResourceType::BUY:
