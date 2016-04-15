@@ -9,6 +9,7 @@ class ResourceType
 {
     const ACCOUNT = 'account';
     const ADDRESS = 'address';
+    const APPLICATION = 'application';
     const BITCOIN_ADDRESS = 'bitcoin_address';
     const BUY = 'buy';
     const CHECKOUT = 'checkout';
