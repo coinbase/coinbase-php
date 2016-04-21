@@ -348,7 +348,7 @@ $addresses = $client->getAccountAddresses($account);
 $address = $client->getAccountAddress($account, $addressId);
 ```
 
-**List transactiona for address**
+**List transactions for address**
 
 ```php
 $transactions = $client->getAddressTransactions($address);
@@ -672,6 +672,8 @@ $checkouts = $client->getCheckouts();
 #### Create checkout
 
 ```php
+use Coinbase\Wallet\Resource\Checkout;
+
 $params = array(
     'name'               => 'My Order',
     'amount'             => new Money(100, 'USD'),
@@ -681,7 +683,13 @@ $params = array(
 $checkout = new Checkout($params);
 $client->createCheckout($checkout);
 $code = $checkout->getEmbedCode();
-$redirect_url = "https://www.coinbase.com/checkouts/$code";
+$redirect_url = "https://www.coinbase.com/checkouts/$code"; 
+```
+
+Note : If you use sandbox mode then you should use the sandbox url like this:
+
+```php
+$redirect_url = "https://www.sandbox.coinbase.com/checkouts/$code"; 
 ```
 
 #### Get checkout
