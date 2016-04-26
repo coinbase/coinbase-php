@@ -74,9 +74,9 @@ class HttpException extends RuntimeException
     }
 
     /** @return Error[] */
-    private static function errors(ResponseInterface $response)
+    private static function errors(ResponseInterface $response = null)
     {
-        $data = json_decode($response->getBody(), true);
+        $data = $response ? json_decode($response->getBody(), true) : null;
 
         if (isset($data['errors'])) {
             // api errors
