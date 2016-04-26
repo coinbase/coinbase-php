@@ -689,7 +689,7 @@ $redirect_url = "https://www.coinbase.com/checkouts/$code";
 Note : If you use sandbox mode then you should use the sandbox url like this:
 
 ```php
-$redirect_url = "https://www.sandbox.coinbase.com/checkouts/$code"; 
+$redirect_url = "https://sandbox.coinbase.com/checkouts/$code"; 
 ```
 
 #### Get checkout
