@@ -114,11 +114,15 @@ class Client
 
     public function getSellPrice($currency = null, array $params = [])
     {
-        if ($currency) {
-            $params['currency'] = $currency;
+        if (strpos($currency, '-') !== false) {
+            $pair = $currency;
+        } else if ($currency) {
+            $pair = 'BTC-' . $currency;
+        } else {
+            $pair = 'BTC-USD';
         }
 
-        return $this->getAndMapMoney('/v2/prices/sell', $params);
+        return $this->getAndMapMoney('/v2/prices/' . $pair . '/sell', $params);
     }
 
     public function getSpotPrice($currency = null, array $params = [])

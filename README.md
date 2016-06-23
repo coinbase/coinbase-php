@@ -242,7 +242,7 @@ $buyPrice = $client->getBuyPrice();
 **Sell price**
 
 ```php
-$sellPrice = $client->getSellPrice();
+$sellPrice = $client->getSellPrice('BTC-USD');
 ```
 
 **Spot price**
