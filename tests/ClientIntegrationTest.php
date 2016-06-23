@@ -149,9 +149,23 @@ class ClientIntegrationTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(Money::class, $price);
     }
 
-    public function testGetSpotPrice()
+    public function testGetSpotPrice1()
     {
         $price = $this->client->getSpotPrice();
+
+        $this->assertInstanceOf(Money::class, $price);
+    }
+
+    public function testGetSpotPrice2()
+    {
+        $price = $this->client->getSpotPrice('USD');
+
+        $this->assertInstanceOf(Money::class, $price);
+    }
+
+    public function testGetSpotPrice3()
+    {
+        $price = $this->client->getSpotPrice('ETH-USD');
 
         $this->assertInstanceOf(Money::class, $price);
     }

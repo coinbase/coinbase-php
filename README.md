@@ -248,7 +248,7 @@ $sellPrice = $client->getSellPrice('BTC-USD');
 **Spot price**
 
 ```php
-$spotPrice = $client->getSpotPrice();
+$spotPrice = $client->getSpotPrice('BTC-USD');
 ```
 
 **Current server time**

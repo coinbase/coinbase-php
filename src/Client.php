@@ -127,11 +127,15 @@ class Client
 
     public function getSpotPrice($currency = null, array $params = [])
     {
-        if ($currency) {
-            $params['currency'] = $currency;
+        if (strpos($currency, '-') !== false) {
+            $pair = $currency;
+        } else if ($currency) {
+            $pair = 'BTC-' . $currency;
+        } else {
+            $pair = 'BTC-USD';
         }
 
-        return $this->getAndMapMoney('/v2/prices/spot', $params);
+        return $this->getAndMapMoney('/v2/prices/' . $pair . '/spot', $params);
     }
 
     public function getHistoricPrices($currency = null, array $params = [])
