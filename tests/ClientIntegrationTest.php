@@ -121,9 +121,23 @@ class ClientIntegrationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('CAD', $data['currency']);
     }
 
-    public function testGetBuyPrice()
+    public function testGetBuyPrice1()
     {
         $price = $this->client->getBuyPrice();
+
+        $this->assertInstanceOf(Money::class, $price);
+    }
+
+    public function testGetBuyPrice2()
+    {
+        $price = $this->client->getBuyPrice('USD');
+
+        $this->assertInstanceOf(Money::class, $price);
+    }
+
+    public function testGetBuyPrice3()
+    {
+        $price = $this->client->getBuyPrice('ETH-USD');
 
         $this->assertInstanceOf(Money::class, $price);
     }

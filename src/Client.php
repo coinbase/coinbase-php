@@ -105,11 +105,17 @@ class Client
 
     public function getBuyPrice($currency = null, array $params = [])
     {
-        if ($currency) {
-            $params['currency'] = $currency;
+        // If AAA-BBB format, use it. If fiat only given, use BTC-XXX.
+        // If undefined, use BTC-USD.
+        if (strpos($currency, '-') !== false) {
+            $pair = $currency;
+        } else if ($currency) {
+            $pair = 'BTC-' . $currency;
+        } else {
+            $pair = 'BTC-USD';
         }
 
-        return $this->getAndMapMoney('/v2/prices/buy', $params);
+        return $this->getAndMapMoney('/v2/prices/' . $pair . '/buy', $params);
     }
 
     public function getSellPrice($currency = null, array $params = [])

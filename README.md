@@ -236,7 +236,7 @@ $rates = $client->getExchangeRates();
 **Buy price**
 
 ```php
-$buyPrice = $client->getBuyPrice();
+$buyPrice = $client->getBuyPrice('BTC-USD');
 ```
 
 **Sell price**
