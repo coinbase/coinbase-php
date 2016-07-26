@@ -236,19 +236,19 @@ $rates = $client->getExchangeRates();
 **Buy price**
 
 ```php
-$buyPrice = $client->getBuyPrice();
+$buyPrice = $client->getBuyPrice('BTC-USD');
 ```
 
 **Sell price**
 
 ```php
-$sellPrice = $client->getSellPrice();
+$sellPrice = $client->getSellPrice('BTC-USD');
 ```
 
 **Spot price**
 
 ```php
-$spotPrice = $client->getSpotPrice();
+$spotPrice = $client->getSpotPrice('BTC-USD');
 ```
 
 **Current server time**

@@ -121,23 +121,65 @@ class ClientIntegrationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('CAD', $data['currency']);
     }
 
-    public function testGetBuyPrice()
+    public function testGetBuyPrice1()
     {
         $price = $this->client->getBuyPrice();
 
         $this->assertInstanceOf(Money::class, $price);
     }
 
-    public function testGetSellPrice()
+    public function testGetBuyPrice2()
+    {
+        $price = $this->client->getBuyPrice('USD');
+
+        $this->assertInstanceOf(Money::class, $price);
+    }
+
+    public function testGetBuyPrice3()
+    {
+        $price = $this->client->getBuyPrice('ETH-USD');
+
+        $this->assertInstanceOf(Money::class, $price);
+    }
+
+    public function testGetSellPrice1()
     {
         $price = $this->client->getSellPrice();
 
         $this->assertInstanceOf(Money::class, $price);
     }
 
-    public function testGetSpotPrice()
+    public function testGetSellPrice2()
+    {
+        $price = $this->client->getSellPrice('USD');
+
+        $this->assertInstanceOf(Money::class, $price);
+    }
+
+    public function testGetSellPrice3()
+    {
+        $price = $this->client->getSellPrice('ETH-USD');
+
+        $this->assertInstanceOf(Money::class, $price);
+    }
+
+    public function testGetSpotPrice1()
     {
         $price = $this->client->getSpotPrice();
+
+        $this->assertInstanceOf(Money::class, $price);
+    }
+
+    public function testGetSpotPrice2()
+    {
+        $price = $this->client->getSpotPrice('USD');
+
+        $this->assertInstanceOf(Money::class, $price);
+    }
+
+    public function testGetSpotPrice3()
+    {
+        $price = $this->client->getSpotPrice('ETH-USD');
 
         $this->assertInstanceOf(Money::class, $price);
     }
