@@ -15,8 +15,8 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     public function testCustomApiUrl()
     {
         $config = new Configuration(new AuthenticationStub());
-        $config->setApiUrl(Configuration::SANDBOX_API_URL);
-        $this->assertEquals(Configuration::SANDBOX_API_URL, $config->getApiUrl());
+        $config->setApiUrl('https://example.com');
+        $this->assertEquals('https://example.com', $config->getApiUrl());
     }
 
     public function testDefaultApiVersion()

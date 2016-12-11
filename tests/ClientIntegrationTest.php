@@ -45,8 +45,6 @@ class ClientIntegrationTest extends \PHPUnit_Framework_TestCase
             $_SERVER['CB_API_SECRET']
         );
 
-        $configuration->setApiUrl(Configuration::SANDBOX_API_URL);
-
         $this->client = Client::create($configuration);
     }
 
@@ -70,7 +68,6 @@ class ClientIntegrationTest extends \PHPUnit_Framework_TestCase
         }
 
         $configuration = Configuration::oauth($_SERVER['CB_OAUTH_ACCESS_TOKEN']);
-        $configuration->setApiUrl(Configuration::SANDBOX_API_URL);
         $client = Client::create($configuration);
 
         try {
@@ -96,7 +93,6 @@ class ClientIntegrationTest extends \PHPUnit_Framework_TestCase
             $_SERVER['CB_OAUTH_REFRESH_TOKEN']
         );
 
-        $configuration->setApiUrl(Configuration::SANDBOX_API_URL);
         $client = Client::create($configuration);
 
         try {

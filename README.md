@@ -43,7 +43,7 @@ $client = Client::create($configuration);
 Use OAuth2 authentication to access a user's account other than your own. This
 library does not handle the handshake process, and assumes you have an access
 token when it's initialized. You can handle the handshake process using an
-[OAuth2 client][6] such as [league/oauth2-client][7].
+[OAuth2 client][5] such as [league/oauth2-client][6].
 
 ```php
 use Coinbase\Wallet\Client;
@@ -86,22 +86,9 @@ try {
 }
 ```
 
-### Sandbox support
-
-You can easily configure the client to use the [Coinbase Sandbox][4].
-
-```php
-use Coinbase\Wallet\Client;
-use Coinbase\Wallet\Configuration;
-
-$configuration = Configuration::apiKey($apiKey, $apiSecret);
-$configuration->setApiUrl(Configuration::SANDBOX_API_URL);
-$client = Client::create($configuration);
-```
-
 ### Pagination
 
-Several endpoints are [paginated][5]. By default, the library will only fetch
+Several endpoints are [paginated][4]. By default, the library will only fetch
 the first page of data for a given request. You can easily load more than just
 the first page of results.
 
@@ -683,13 +670,7 @@ $params = array(
 $checkout = new Checkout($params);
 $client->createCheckout($checkout);
 $code = $checkout->getEmbedCode();
-$redirect_url = "https://www.coinbase.com/checkouts/$code"; 
-```
-
-Note : If you use sandbox mode then you should use the sandbox url like this:
-
-```php
-$redirect_url = "https://sandbox.coinbase.com/checkouts/$code"; 
+$redirect_url = "https://www.coinbase.com/checkouts/$code";
 ```
 
 #### Get checkout
@@ -711,8 +692,6 @@ $order = $client->createNewCheckoutOrder($checkout);
 ```
 
 ### [Notifications webhook and verification](https://developers.coinbase.com/docs/wallet/notifications)
-
-Note: Only production notifications can be verified. Notifications issued by the sandbox will always return false below.
 
 ```php
 $raw_body = file_get_contents('php://input');
@@ -742,7 +721,6 @@ phpunit --group integration
 [1]: https://developers.coinbase.com/api/v2
 [2]: https://packagist.org/packages/coinbase/coinbase
 [3]: https://developers.coinbase.com/docs/wallet/coinbase-connect#two-factor-authentication
-[4]: https://developers.coinbase.com/api/v2#sandbox
-[5]: https://developers.coinbase.com/api/v2#pagination
-[6]: https://packagist.org/search/?q=oauth2%20client
-[7]: https://packagist.org/packages/league/oauth2-client
+[4]: https://developers.coinbase.com/api/v2#pagination
+[5]: https://packagist.org/search/?q=oauth2%20client
+[6]: https://packagist.org/packages/league/oauth2-client
