@@ -1,6 +1,6 @@
 {
-    "name": "coinbase/coinbase",
-    "description": "Coinbase API library",
+    "name": "coinbase/coinbase-YOURPROJECT",
+    "description": "Coinbase API library for YOURPROJECT",
     "keywords": [ "bitcoin", "coinbase" ],
     "homepage": "http://coinbase.com",
     "type": "library",
