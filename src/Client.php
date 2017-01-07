@@ -309,10 +309,11 @@ class Client
         $this->loadNextTransactions($transactions, $params);
     }
 
+    /** @return Address */
     public function createAccountAddress(Account $account, Address $address, array $params = [])
     {
         $data = $this->mapper->fromAddress($address);
-        $this->postAndMap($account->getResourcePath().'/addresses', $data + $params, 'toAddress', $address);
+        return $this->postAndMap($account->getResourcePath().'/addresses', $data + $params, 'toAddress', $address);
     }
 
     // transactions
