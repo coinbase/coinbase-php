@@ -234,7 +234,7 @@ class Client
     public function createAccount(Account $account, array $params = [])
     {
         $data = $this->mapper->fromAccount($account);
-        $this->postAndMap('/v2/accounts', $data + $params, 'toAccount', $account);
+        return $this->postAndMap('/v2/accounts', $data + $params, 'toAccount', $account);
     }
 
     /** @return Account */
@@ -245,7 +245,7 @@ class Client
 
     public function setPrimaryAccount(Account $account, array $params = [])
     {
-        $this->postAndMap($account->getResourcePath().'/primary', $params, 'toAccount', $account);
+        return $this->postAndMap($account->getResourcePath().'/primary', $params, 'toAccount', $account);
     }
 
     public function updateAccount(Account $account, array $params = [])
@@ -309,10 +309,10 @@ class Client
         $this->loadNextTransactions($transactions, $params);
     }
 
-    public function createAccountAddress(Account $account, Address $address, array $params = [])
+    public function createAccountAddress(Account $account, Address $address, array $params = []) : Address
     {
         $data = $this->mapper->fromAddress($address);
-        $this->postAndMap($account->getResourcePath().'/addresses', $data + $params, 'toAddress', $address);
+        return $this->postAndMap($account->getResourcePath().'/addresses', $data + $params, 'toAddress', $address);
     }
 
     // transactions
@@ -359,7 +359,7 @@ class Client
     public function createAccountTransaction(Account $account, Transaction $transaction, array $params = [])
     {
         $data = $this->mapper->fromTransaction($transaction);
-        $this->postAndMap($account->getResourcePath().'/transactions', $data + $params, 'toTransaction', $transaction);
+        return $this->postAndMap($account->getResourcePath().'/transactions', $data + $params, 'toTransaction', $transaction);
     }
 
     public function completeTransaction(Transaction $transaction, array $params = [])
@@ -421,12 +421,12 @@ class Client
     public function createAccountBuy(Account $account, Buy $buy, array $params = [])
     {
         $data = $this->mapper->fromBuy($buy);
-        $this->postAndMap($account->getResourcePath().'/buys', $data + $params, 'toBuy', $buy);
+        return $this->postAndMap($account->getResourcePath().'/buys', $data + $params, 'toBuy', $buy);
     }
 
     public function commitBuy(Buy $buy, array $params = [])
     {
-        $this->postAndMap($buy->getResourcePath().'/commit', $params, 'toBuy', $buy);
+        return $this->postAndMap($buy->getResourcePath().'/commit', $params, 'toBuy', $buy);
     }
 
     // sells
@@ -473,12 +473,12 @@ class Client
     public function createAccountSell(Account $account, Sell $sell, array $params = [])
     {
         $data = $this->mapper->fromSell($sell);
-        $this->postAndMap($account->getResourcePath().'/sells', $data + $params, 'toSell', $sell);
+        return $this->postAndMap($account->getResourcePath().'/sells', $data + $params, 'toSell', $sell);
     }
 
     public function commitSell(Sell $sell, array $params = [])
     {
-        $this->postAndMap($sell->getResourcePath().'/commit', $params, 'toSell', $sell);
+        return $this->postAndMap($sell->getResourcePath().'/commit', $params, 'toSell', $sell);
     }
 
     // deposits
@@ -523,12 +523,12 @@ class Client
     public function createAccountDeposit(Account $account, Deposit $deposit, array $params = [])
     {
         $data = $this->mapper->fromDeposit($deposit);
-        $this->postAndMap($account->getResourcePath().'/deposits', $data + $params, 'toDeposit', $deposit);
+        return $this->postAndMap($account->getResourcePath().'/deposits', $data + $params, 'toDeposit', $deposit);
     }
 
     public function commitDeposit(Deposit $deposit, array $params = [])
     {
-        $this->postAndMap($deposit->getResourcePath().'/commit', $params, 'toDeposit', $deposit);
+        return $this->postAndMap($deposit->getResourcePath().'/commit', $params, 'toDeposit', $deposit);
     }
 
     // withdrawals
@@ -573,12 +573,12 @@ class Client
     public function createAccountWithdrawal(Account $account, Withdrawal $withdrawal, array $params = [])
     {
         $data = $this->mapper->fromWithdrawal($withdrawal);
-        $this->postAndMap($account->getResourcePath().'/withdrawals', $data + $params, 'toWithdrawal', $withdrawal);
+        return $this->postAndMap($account->getResourcePath().'/withdrawals', $data + $params, 'toWithdrawal', $withdrawal);
     }
 
     public function commitWithdrawal(Withdrawal $withdrawal, array $params = [])
     {
-        $this->postAndMap($withdrawal->getResourcePath().'/commit', $params, 'toWithdrawal', $withdrawal);
+        return $this->postAndMap($withdrawal->getResourcePath().'/commit', $params, 'toWithdrawal', $withdrawal);
     }
 
     // payment methods
@@ -655,7 +655,7 @@ class Client
     public function createOrder(Order $order, array $params = [])
     {
         $data = $this->mapper->fromOrder($order);
-        $this->postAndMap('/v2/orders', $data + $params, 'toOrder', $order);
+        return $this->postAndMap('/v2/orders', $data + $params, 'toOrder', $order);
     }
 
     /**
@@ -670,7 +670,7 @@ class Client
     {
         $params['currency'] = $currency;
 
-        $this->postAndMap($order->getResourcePath().'/refund', $params, 'toOrder', $order);
+        return $this->postAndMap($order->getResourcePath().'/refund', $params, 'toOrder', $order);
     }
 
     /**
@@ -704,7 +704,7 @@ class Client
     public function createCheckout(Checkout $checkout, array $params = [])
     {
         $data = $this->mapper->fromCheckout($checkout);
-        $this->postAndMap('/v2/checkouts', $data + $params, 'toCheckout', $checkout);
+        return $this->postAndMap('/v2/checkouts', $data + $params, 'toCheckout', $checkout);
     }
 
     /**
