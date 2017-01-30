@@ -74,9 +74,11 @@ class Client
     /** @return array|null */
     public function decodeLastResponse()
     {
-        if ($response = $this->http->getLastResponse()) {
+        $response = $this->http->getLastResponse();
+        if ($response) {
             return $this->mapper->decode($response);
         }
+        return null;
     }
 
     /**
@@ -172,7 +174,7 @@ class Client
 
     // users
 
-    /** @return User */
+    /** @return Resource */
     public function getUser($userId, array $params = [])
     {
         return $this->getAndMap('/v2/users/'.$userId, $params, 'toUser');
@@ -183,7 +185,7 @@ class Client
         $this->getAndMap($user->getResourcePath(), $params, 'toUser', $user);
     }
 
-    /** @return CurrentUser */
+    /** @return Resource */
     public function getCurrentUser(array $params = [])
     {
         return $this->getAndMap('/v2/user', $params, 'toUser', new CurrentUser());
@@ -220,7 +222,7 @@ class Client
         $this->loadNext($accounts, $params, 'toAccounts');
     }
 
-    /** @return Account */
+    /** @return Resource */
     public function getAccount($accountId, array $params = [])
     {
         return $this->getAndMap('/v2/accounts/'.$accountId, $params, 'toAccount');
@@ -237,7 +239,7 @@ class Client
         return $this->postAndMap('/v2/accounts', $data + $params, 'toAccount', $account);
     }
 
-    /** @return Account */
+    /** @return Resource */
     public function getPrimaryAccount(array $params = [])
     {
         return $this->getAndMap('/v2/accounts/primary', $params, 'toAccount');
@@ -279,7 +281,7 @@ class Client
         $this->loadNext($addresses, $params, 'toAddresses');
     }
 
-    /** @return Address */
+    /** @return Resource */
     public function getAccountAddress(Account $account, $addressId, array $params = [])
     {
         $path = sprintf('%s/addresses/%s', $account->getResourcePath(), $addressId);
@@ -334,7 +336,7 @@ class Client
         $this->loadNext($transactions, $params, 'toTransactions');
     }
 
-    /** @return Transaction */
+    /** @return Resource */
     public function getAccountTransaction(Account $account, $transactionId, array $params = [])
     {
         $path = sprintf('%s/transactions/%s', $account->getResourcePath(), $transactionId);
@@ -396,7 +398,7 @@ class Client
         $this->loadNext($buys, $params, 'toBuys');
     }
 
-    /** @return Buy */
+    /** @return Resource */
     public function getAccountBuy(Account $account, $buyId, array $params = [])
     {
         $path = sprintf('%s/buys/%s', $account->getResourcePath(), $buyId);
@@ -448,7 +450,7 @@ class Client
         $this->loadNext($sells, $params, 'toSells');
     }
 
-    /** @return Sell */
+    /** @return Resource */
     public function getAccountSell(Account $account, $sellId, array $params = [])
     {
         $path = sprintf('%s/sells/%s', $account->getResourcePath(), $sellId);
@@ -500,7 +502,7 @@ class Client
         $this->loadNext($deposits, $params, 'toDeposits');
     }
 
-    /** @return Deposit */
+    /** @return Resource */
     public function getAccountDeposit(Account $account, $depositId, array $params = [])
     {
         $path = sprintf('%s/deposits/%s', $account->getResourcePath(), $depositId);
@@ -550,7 +552,7 @@ class Client
         $this->loadNext($withdrawals, $params, 'toWithdrawals');
     }
 
-    /** @return Withdrawal */
+    /** @return Resource */
     public function getAccountWithdrawal(Account $account, $withdrawalId, array $params = [])
     {
         $path = sprintf('%s/withdrawals/%s', $account->getResourcePath(), $withdrawalId);
@@ -600,7 +602,7 @@ class Client
         $this->loadNext($paymentMethods, $params, 'toPaymentMethods');
     }
 
-    /** @return PaymentMethod */
+    /** @return Resource */
     public function getPaymentMethod($paymentMethodId, array $params = [])
     {
         return $this->getAndMap('/v2/payment-methods/'.$paymentMethodId, $params, 'toPaymentMethod');
@@ -613,7 +615,7 @@ class Client
 
     // merchant api
 
-    /** @return Merchant */
+    /** @return Resource */
     public function getMerchant($merchantId, array $params = [])
     {
         return $this->getAndMap('/v2/merchants/'.$merchantId, $params, 'toMerchant');
@@ -641,7 +643,7 @@ class Client
         $this->loadNext($orders, $params, 'toOrders');
     }
 
-    /** @return Order */
+    /** @return Resource */
     public function getOrder($orderId, array $params = [])
     {
         return $this->getAndMap('/v2/orders/'.$orderId, $params, 'toOrder');
@@ -690,7 +692,7 @@ class Client
         $this->loadNext($checkouts, $params, 'toCheckouts');
     }
 
-    /** @return Checkout */
+    /** @return Resource */
     public function getCheckout($checkoutId, array $params = [])
     {
         return $this->getAndMap('/v2/checkouts/'.$checkoutId, $params, 'toCheckout');
@@ -724,7 +726,7 @@ class Client
         $this->loadNext($notifications, $params, 'toNotifications');
     }
 
-    /** @return Notification */
+    /** @return Resource */
     public function getNotification($notificationId, array $params = [])
     {
         return $this->getAndMap('/v2/notifications/'.$notificationId, $params, 'toNotification');
@@ -738,7 +740,7 @@ class Client
     /**
      * Create a Notification object from the body of a notification webhook
      *
-     * @return Notification
+     * @return Resource
      */
     public function parseNotification($webhook_body)
     {
