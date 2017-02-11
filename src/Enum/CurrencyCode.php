@@ -53,6 +53,7 @@ class CurrencyCode
     const EGP = 'EGP';
     const ERN = 'ERN';
     const ETB = 'ETB';
+    const ETH = 'ETH';
     const EUR = 'EUR';
     const FJD = 'FJD';
     const FKP = 'FKP';
