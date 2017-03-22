@@ -32,6 +32,7 @@ class CurrencyCode
     const BTN = 'BTN';
     const BWP = 'BWP';
     const BYR = 'BYR';
+    const BYN = 'BYN';
     const BZD = 'BZD';
     const CAD = 'CAD';
     const CDF = 'CDF';
