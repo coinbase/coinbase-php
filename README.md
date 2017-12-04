@@ -126,8 +126,8 @@ $client = Client::create($configuration);
 
 ### Resource references
 
-In some cases the API will return resource references in place of exanded
-resource objects. This references can be expanded by refreshing them.
+In some cases the API will return resource references in place of expanded
+resource objects. These references can be expanded by refreshing them.
 
 ```php
 $deposit = $this->client->getAccountDeposit($account, $depositId);
@@ -137,7 +137,7 @@ if (!$transaction->isExpanded()) {
 }
 ```
 
-You can also request that the API return an expanded resource in the intial
+You can also request that the API return an expanded resource in the initial
 request by using the `expand` parameter.
 
 ```php
