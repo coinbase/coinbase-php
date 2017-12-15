@@ -24,6 +24,7 @@ class ResourceType
     const WITHDRAWAL = 'withdrawal';
     const BITCOIN_NETWORK = 'bitcoin_network';
     const NOTIFICATION = 'notification';
+    const LITECOIN_ADDRESS = 'litecoin_address';
 
     private function __construct()
     {

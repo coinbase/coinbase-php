@@ -790,6 +790,8 @@ class Mapper
                 return $expanded ? $this->injectNotification($data) : new Notification($data['resource_path']);
             case ResourceType::BITCOIN_NETWORK:
                 return new BitcoinNetwork();
+            case ResourceType::LITECOIN_ADDRESS:
+                return $expanded ? $this->injectAddress($data) : new Address($data['resource_path']);
             default:
                 throw new RuntimeException('Unrecognized resource type: '.$type);
         }
