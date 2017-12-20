@@ -185,6 +185,7 @@ class HttpClient
         $defaultHeaders = [
             'User-Agent' => 'coinbase/php/'.Client::VERSION,
             'CB-VERSION' => $this->apiVersion,
+            'Content-Type' => 'application/json',
         ];
 
         if (isset($params[Param::TWO_FACTOR_TOKEN])) {
