@@ -798,6 +798,8 @@ class Mapper
                 return $expanded ? $this->injectAddress($data) : new Address($data['resource_path']);
             case ResourceType::ETHEREUM_ADDRESS:
                 return $expanded ? $this->injectAddress($data) : new Address($data['resource_path']);
+            case ResourceType::BITCOIN_CASH_ADDRESS:
+                return $expanded ? $this->injectAddress($data) : new Address($data['resource_path']);
             default:
                 throw new RuntimeException('Unrecognized resource type: '.$type);
         }

@@ -27,6 +27,7 @@ class ResourceType
     const NOTIFICATION = 'notification';
     const LITECOIN_ADDRESS = 'litecoin_address';
     const ETHEREUM_ADDRESS = 'ethereum_address';
+    const BITCOIN_CASH_ADDRESS = 'bitcoin_cash_address';
 
     private function __construct()
     {
