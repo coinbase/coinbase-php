@@ -5,7 +5,7 @@
  * Time: 11:30
  */
 
-namespace vendor\coinbase\coinbase\src\Resource;
+namespace Coinbase\Wallet\Resource;
 
 use Coinbase\Wallet\Enum\ResourceType;
 use Coinbase\Wallet\Resource\Resource;

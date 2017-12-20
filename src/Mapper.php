@@ -25,11 +25,12 @@ use Coinbase\Wallet\Resource\User;
 use Coinbase\Wallet\Resource\Withdrawal;
 use Coinbase\Wallet\Resource\Notification;
 use Coinbase\Wallet\Resource\BitcoinNetwork;
+use Coinbase\Wallet\Resource\BitcoinCashNetwork;
 use Coinbase\Wallet\Value\Fee;
 use Coinbase\Wallet\Value\Money;
 use Coinbase\Wallet\Value\Network;
 use Psr\Http\Message\ResponseInterface;
-use vendor\coinbase\coinbase\src\Resource\BitcoinCashNetwork;
+
 
 class Mapper
 {
