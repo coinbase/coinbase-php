@@ -23,6 +23,7 @@ class ResourceType
     const USER = 'user';
     const WITHDRAWAL = 'withdrawal';
     const BITCOIN_NETWORK = 'bitcoin_network';
+    const BITCOIN_CASH_NETWORK = 'bitcoin_cash_network';
     const NOTIFICATION = 'notification';
     const LITECOIN_ADDRESS = 'litecoin_address';
     const ETHEREUM_ADDRESS = 'ethereum_address';

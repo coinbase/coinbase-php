@@ -29,6 +29,7 @@ use Coinbase\Wallet\Value\Fee;
 use Coinbase\Wallet\Value\Money;
 use Coinbase\Wallet\Value\Network;
 use Psr\Http\Message\ResponseInterface;
+use vendor\coinbase\coinbase\src\Resource\BitcoinCashNetwork;
 
 class Mapper
 {
@@ -790,6 +791,8 @@ class Mapper
                 return $expanded ? $this->injectNotification($data) : new Notification($data['resource_path']);
             case ResourceType::BITCOIN_NETWORK:
                 return new BitcoinNetwork();
+            case ResourceType::BITCOIN_CASH_NETWORK:
+                return new BitcoinCashNetwork();
             case ResourceType::LITECOIN_ADDRESS:
                 return $expanded ? $this->injectAddress($data) : new Address($data['resource_path']);
             case ResourceType::ETHEREUM_ADDRESS:
