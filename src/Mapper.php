@@ -14,6 +14,7 @@ use Coinbase\Wallet\Resource\Checkout;
 use Coinbase\Wallet\Resource\CurrentUser;
 use Coinbase\Wallet\Resource\Deposit;
 use Coinbase\Wallet\Resource\Email;
+use Coinbase\Wallet\Resource\LitecoinNetwork;
 use Coinbase\Wallet\Resource\Merchant;
 use Coinbase\Wallet\Resource\Order;
 use Coinbase\Wallet\Resource\PaymentMethod;
@@ -794,6 +795,8 @@ class Mapper
                 return new BitcoinNetwork();
             case ResourceType::BITCOIN_CASH_NETWORK:
                 return new BitcoinCashNetwork();
+            case ResourceType::LITECOIN_NETWORK:
+                return new LitecoinNetwork();
             case ResourceType::LITECOIN_ADDRESS:
                 return $expanded ? $this->injectAddress($data) : new Address($data['resource_path']);
             case ResourceType::ETHEREUM_ADDRESS:
