@@ -25,6 +25,7 @@ class ResourceType
     const BITCOIN_NETWORK = 'bitcoin_network';
     const BITCOIN_CASH_NETWORK = 'bitcoin_cash_network';
     const LITECOIN_NETWORK = 'litecoin_network';
+    const ETHEREUM_NETWORK = 'ethereum_network';
     const NOTIFICATION = 'notification';
     const LITECOIN_ADDRESS = 'litecoin_address';
     const ETHEREUM_ADDRESS = 'ethereum_address';

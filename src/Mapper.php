@@ -797,6 +797,8 @@ class Mapper
                 return new BitcoinCashNetwork();
             case ResourceType::LITECOIN_NETWORK:
                 return new LitecoinNetwork();
+            case ResourceType::ETHEREUM_NETWORK:
+                return new EthereumNetwork();
             case ResourceType::LITECOIN_ADDRESS:
                 return $expanded ? $this->injectAddress($data) : new Address($data['resource_path']);
             case ResourceType::ETHEREUM_ADDRESS:
