@@ -14,6 +14,7 @@ use Coinbase\Wallet\Resource\Checkout;
 use Coinbase\Wallet\Resource\CurrentUser;
 use Coinbase\Wallet\Resource\Deposit;
 use Coinbase\Wallet\Resource\Email;
+use Coinbase\Wallet\Resource\EthereumNetwork;
 use Coinbase\Wallet\Resource\LitecoinNetwork;
 use Coinbase\Wallet\Resource\Merchant;
 use Coinbase\Wallet\Resource\Order;
