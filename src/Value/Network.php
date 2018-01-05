@@ -17,7 +17,7 @@ class Network
     {
         $this->status = $status;
         $this->hash = $hash;
-        $this->transactionFee = new Money($transactionFee['amount'], $transactionFee['currency']);
+        $this->transactionFee = $transactionFee ? new Money($transactionFee['amount'], $transactionFee['currency']) : null;
     }
 
     public function getStatus()
