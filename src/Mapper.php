@@ -658,7 +658,7 @@ class Mapper
 
         if ('network' === $key && isset($value['status'])) {
             // network
-            return new Network($value['status'], isset($value['hash']) ? $value['hash'] : null);
+            return new Network($value['status'], isset($value['hash']) ? $value['hash'] : null, isset($value['transaction_fee']) ? $value['transaction_fee'] : null);
         }
 
         if (isset($value['type']) && isset($value['amount']) && isset($value['amount']['amount']) && isset($value['amount']['currency'])) {
