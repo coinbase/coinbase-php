@@ -13,6 +13,6 @@ class EthereumNetwork extends Resource
 {
     public function __construct()
     {
-        parent::__construct(ResourceType::LITECOIN_NETWORK);
+        parent::__construct(ResourceType::ETHEREUM_NETWORK);
     }
 }
