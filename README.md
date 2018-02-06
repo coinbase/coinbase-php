@@ -523,7 +523,7 @@ $deposits = $client->getAccountDeposits($account);
 **Get deposit info**
 
 ```php
-$deposit = $client->getDeposit($account, $depositId);
+$deposit = $client->getAccountDeposit($account, $depositId);
 ```
 
 **Deposit funds**
