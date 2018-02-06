@@ -14,6 +14,8 @@ use Coinbase\Wallet\Resource\Checkout;
 use Coinbase\Wallet\Resource\CurrentUser;
 use Coinbase\Wallet\Resource\Deposit;
 use Coinbase\Wallet\Resource\Email;
+use Coinbase\Wallet\Resource\EthereumNetwork;
+use Coinbase\Wallet\Resource\LitecoinNetwork;
 use Coinbase\Wallet\Resource\Merchant;
 use Coinbase\Wallet\Resource\Order;
 use Coinbase\Wallet\Resource\PaymentMethod;
@@ -790,6 +792,10 @@ class Mapper
                 return $expanded ? $this->injectNotification($data) : new Notification($data['resource_path']);
             case ResourceType::BITCOIN_NETWORK:
                 return new BitcoinNetwork();
+            case ResourceType::ETHEREUM_NETWORK:
+                return new EthereumNetwork();
+            case ResourceType::LITECOIN_NETWORK:
+                return new LitecoinNetwork();
             default:
                 throw new RuntimeException('Unrecognized resource type: '.$type);
         }
