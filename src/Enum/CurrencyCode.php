@@ -32,6 +32,7 @@ class CurrencyCode
     const BTN = 'BTN';
     const BWP = 'BWP';
     const BYR = 'BYR';
+    const BYN = 'BYN';
     const BZD = 'BZD';
     const CAD = 'CAD';
     const CDF = 'CDF';
@@ -53,6 +54,7 @@ class CurrencyCode
     const EGP = 'EGP';
     const ERN = 'ERN';
     const ETB = 'ETB';
+    const ETH = 'ETH';
     const EUR = 'EUR';
     const FJD = 'FJD';
     const FKP = 'FKP';

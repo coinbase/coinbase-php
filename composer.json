@@ -4,7 +4,7 @@
     "keywords": [ "bitcoin", "coinbase" ],
     "homepage": "http://coinbase.com",
     "type": "library",
-    "license": "MIT",
+    "license": "Apache-2.0",
     "autoload": {
         "psr-4": { "Coinbase\\Wallet\\": "src/" }
     },
@@ -12,7 +12,7 @@
         "psr-4": { "Coinbase\\Wallet\\Tests\\": "tests/" }
     },
     "require": {
-        "php": ">=5.5.0",
+        "php": ">=5.6.0",
         "guzzlehttp/guzzle": "^6.0",
         "psr/http-message": "^1.0",
         "psr/log": "^1.0"

@@ -4,7 +4,7 @@ namespace Coinbase\Wallet\Value;
 
 use Coinbase\Wallet\Enum\CurrencyCode;
 
-class Money
+class Money implements \JsonSerializable
 {
     private $amount;
     private $currency;
@@ -33,5 +33,16 @@ class Money
     public function getCurrency()
     {
         return $this->currency;
+    }
+    
+    /**
+    * @return array
+    */
+    public function jsonSerialize()
+    {
+        return [
+            'amount' => $this->amount,
+            'currency' => $this->currency,
+        ];
     }
 }

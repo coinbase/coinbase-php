@@ -31,6 +31,13 @@ class ResourceType
     const ETHEREUM_ADDRESS = 'ethereum_address';
     const BITCOIN_CASH_ADDRESS = 'bitcoin_cash_address';
 
+
+    const ETHEREUM_ADDRESS = 'ethereum_address';
+    const ETHEREUM_NETWORK = 'ethereum_network';
+
+    const LITECOIN_ADDRESS = 'litecoin_address';
+    const LITECOIN_NETWORK = 'litecoin_network';
+
     private function __construct()
     {
     }
