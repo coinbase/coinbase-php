@@ -1,6 +1,7 @@
 <?php
 
 namespace Coinbase\Wallet\Resource;
+
 use Coinbase\Wallet\Enum\ResourceType;
 
 class EthereumNetwork extends Resource
@@ -9,5 +10,4 @@ class EthereumNetwork extends Resource
     {
         parent::__construct(ResourceType::ETHEREUM_NETWORK);
     }
-
 }

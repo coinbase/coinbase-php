@@ -10,10 +10,14 @@ class Network
     /** @var string */
     private $hash;
 
-    public function __construct($status, $hash)
+    /** @var Money */
+    private $transactionFee;
+
+    public function __construct($status, $hash, $transactionFee)
     {
         $this->status = $status;
         $this->hash = $hash;
+        $this->transactionFee = $transactionFee ? new Money($transactionFee['amount'], $transactionFee['currency']) : null;
     }
 
     public function getStatus()
@@ -25,4 +29,10 @@ class Network
     {
         return $this->hash;
     }
+
+    public function getTransactionFee()
+    {
+        return $this->transactionFee;
+    }
+
 }

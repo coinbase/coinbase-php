@@ -1,6 +1,7 @@
 <?php
 
 namespace Coinbase\Wallet\Resource;
+
 use Coinbase\Wallet\Enum\ResourceType;
 
 class LitecoinNetwork extends Resource
