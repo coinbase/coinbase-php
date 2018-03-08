@@ -490,10 +490,14 @@ class Mapper
     {
         $data = $this->decode($response);
 
-        $coll = new ResourceCollection(
-            $data['pagination']['previous_uri'],
-            $data['pagination']['next_uri']
-        );
+        if (isset($data['pagination'])) {
+            $coll = new ResourceCollection(
+                $data['pagination']['previous_uri'],
+                $data['pagination']['next_uri']
+            );
+        } else {
+            $coll = new ResourceCollection();
+        }
 
         foreach ($data['data'] as $resource) {
             $coll->add($this->$method($resource));
