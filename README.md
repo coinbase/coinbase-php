@@ -382,7 +382,7 @@ $transaction = Transaction::send([
 
 try { $client->createAccountTransaction($account, $transaction); }
 catch(Exception $e) {
-     $error=$e->getMessage(); 
+     echo $e->getMessage(); 
 }
 ```
 
