@@ -94,6 +94,7 @@ class CurrencyCode
     const LKR = 'LKR';
     const LRD = 'LRD';
     const LSL = 'LSL';
+    const LTC = 'LTC';
     const LTL = 'LTL';
     const LVL = 'LVL';
     const LYD = 'LYD';
