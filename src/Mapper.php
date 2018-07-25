@@ -9,12 +9,15 @@ use Coinbase\Wallet\Resource\Account;
 use Coinbase\Wallet\Resource\Address;
 use Coinbase\Wallet\Resource\Application;
 use Coinbase\Wallet\Resource\BitcoinAddress;
+use Coinbase\Wallet\Resource\BitcoinCashAddress;
 use Coinbase\Wallet\Resource\Buy;
 use Coinbase\Wallet\Resource\Checkout;
 use Coinbase\Wallet\Resource\CurrentUser;
 use Coinbase\Wallet\Resource\Deposit;
 use Coinbase\Wallet\Resource\Email;
 use Coinbase\Wallet\Resource\EthereumNetwork;
+use Coinbase\Wallet\Resource\EthrereumAddress;
+use Coinbase\Wallet\Resource\LitecoinAddress;
 use Coinbase\Wallet\Resource\LitecoinNetwork;
 use Coinbase\Wallet\Resource\Merchant;
 use Coinbase\Wallet\Resource\Order;
@@ -120,9 +123,9 @@ class Mapper
     {
         // validate
         $to = $transaction->getTo();
-        if ($to && !$to instanceof Email && !$to instanceof BitcoinAddress && !$to instanceof Account) {
+        if ($to && !$to instanceof Email && !$to instanceof BitcoinAddress && !$to instanceof LitecoinAddress && !$to instanceof EthrereumAddress && !$to instanceof BitcoinCashAddress  && !$to instanceof Account) {
             throw new LogicException(
-                'The Coinbase API only accepts transactions to an account, email, or bitcoin address'
+                'The Coinbase API only accepts transactions to an account, email, bitcoin address, bitcoin cash address, litecoin address, or ethereum address'
             );
         }
 
@@ -707,6 +710,30 @@ class Mapper
             // bitcoin address
             return [
                 'resource' => ResourceType::BITCOIN_ADDRESS,
+                'address' => $value->getAddress(),
+            ];
+        }
+
+        if($value instanceof BitcoinCashAddress){
+            // bitcoin-cash address
+            return [
+                'resource' => ResourceType::BITCOIN_CASH_ADDRESS,
+                'address' => $value->getAddress(),
+            ];
+        }
+
+        if($value instanceof LitecoinAddress){
+            // litecoin address
+            return [
+                'resource' => ResourceType::LITECOIN_ADDRESS,
+                'address' => $value->getAddress(),
+            ];
+        }
+
+        if($value instanceof EthrereumAddress){
+            // ethereum address
+            return [
+                'resource' => ResourceType::ETHEREUM_ADDRESS,
                 'address' => $value->getAddress(),
             ];
         }
