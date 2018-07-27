@@ -380,7 +380,10 @@ $transaction = Transaction::send([
     'fee'              => '0.0001' // only required for transactions under BTC0.0001
 ]);
 
-$client->createAccountTransaction($account, $transaction);
+try { $client->createAccountTransaction($account, $transaction); }
+catch(Exception $e) {
+     echo $e->getMessage(); 
+}
 ```
 
 **Transfer funds to a new account**
