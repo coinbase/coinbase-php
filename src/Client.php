@@ -438,7 +438,7 @@ class Client
      *
      * @return ResourceCollection|Sell[]
      */
-    public function getSells(Account $account, array $params = [])
+    public function getAccountSells(Account $account, array $params = [])
     {
         return $this->getAndMapCollection($account->getResourcePath().'/sells', $params, 'toSells');
     }
