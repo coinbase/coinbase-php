@@ -483,7 +483,7 @@ $client->commitBuy($buy);
 **List sells**
 
 ```php
-$sells = $client->getAccountSells($account);
+$sells = $client->getSells($account);
 ```
 
 **Get sell info**
