@@ -151,9 +151,9 @@ trait AccountActiveRecord
      *
      * @return ResourceCollection|Sell[] The sells
      */
-    public function getSells(array $params = [])
+    public function getAccountSells(array $params = [])
     {
-        return $this->getClient()->getSells($this, $params);
+        return $this->getClient()->getAccountSells($this, $params);
     }
 
     /**
