@@ -31,6 +31,8 @@ use Coinbase\Wallet\Resource\Withdrawal;
 use Coinbase\Wallet\Resource\Notification;
 use Coinbase\Wallet\Resource\BitcoinNetwork;
 use Coinbase\Wallet\Resource\BitcoinCashNetwork;
+use Coinbase\Wallet\Resource\USDCoinAddress;
+use Coinbase\Wallet\Resource\USDCoinNetwork;
 use Coinbase\Wallet\Value\Fee;
 use Coinbase\Wallet\Value\Money;
 use Coinbase\Wallet\Value\Network;
@@ -123,9 +125,9 @@ class Mapper
     {
         // validate
         $to = $transaction->getTo();
-        if ($to && !$to instanceof Email && !$to instanceof BitcoinAddress && !$to instanceof LitecoinAddress && !$to instanceof EthrereumAddress && !$to instanceof BitcoinCashAddress  && !$to instanceof Account) {
+        if ($to && !$to instanceof Email && !$to instanceof BitcoinAddress && !$to instanceof LitecoinAddress && !$to instanceof EthrereumAddress && !$to instanceof BitcoinCashAddress && !$to instanceof USDCoinAddress && !$to instanceof Account) {
             throw new LogicException(
-                'The Coinbase API only accepts transactions to an account, email, bitcoin address, bitcoin cash address, litecoin address, or ethereum address'
+                'The Coinbase API only accepts transactions to an account, email, bitcoin address, bitcoin cash address, litecoin address, ethereum address, or usd coin address'
             );
         }
 
@@ -738,6 +740,14 @@ class Mapper
             ];
         }
 
+        if($value instanceof USDCoinAddress){
+            // usd coin address
+            return [
+                'resource' => ResourceType::USD_COIN_ADDRESS,
+                'address' => $value->getAddress(),
+            ];
+        }
+
         if ($value instanceof Resource) {
             // resource
             return [
@@ -831,9 +841,13 @@ class Mapper
                 return new LitecoinNetwork();
             case ResourceType::ETHEREUM_NETWORK:
                 return new EthereumNetwork();
+            case ResourceType::USD_COIN_NETWORK:
+                return new USDCoinNetwork();
             case ResourceType::LITECOIN_ADDRESS:
                 return $expanded ? $this->injectAddress($data) : new Address($data['resource_path']);
             case ResourceType::ETHEREUM_ADDRESS:
+                return $expanded ? $this->injectAddress($data) : new Address($data['resource_path']);
+            case ResourceType::USD_COIN_ADDRESS:
                 return $expanded ? $this->injectAddress($data) : new Address($data['resource_path']);
             case ResourceType::BITCOIN_CASH_ADDRESS:
                 return $expanded ? $this->injectAddress($data) : new Address($data['resource_path']);
